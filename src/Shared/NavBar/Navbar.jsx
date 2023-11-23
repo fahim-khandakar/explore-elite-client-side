@@ -13,7 +13,8 @@ import {
 } from "@mui/material";
 import * as React from "react";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import "./Navbar.css";
 
 const login = true;
 const pages = [
@@ -47,7 +48,13 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="static" sx={{ bgcolor: "white", color: "black" }}>
+    <AppBar
+      position="static"
+      sx={{
+        bgcolor: "white",
+        color: "#e65728",
+      }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -96,7 +103,7 @@ const Navbar = () => {
               {pages.map((page) => (
                 <MenuItem
                   key={page}
-                  component={Link}
+                  component={NavLink}
                   to={
                     page === "Home"
                       ? "/"
@@ -109,6 +116,7 @@ const Navbar = () => {
               ))}
             </Menu>
           </Box>
+
           <Typography
             variant="h5"
             noWrap
@@ -121,11 +129,17 @@ const Navbar = () => {
               height: "40px",
             }}
           >
-            <img src="/public/logo-no-background.png" alt="" />{" "}
+            <img
+              className="w-full"
+              src="/public/logo-no-background.png"
+              alt=""
+            />{" "}
           </Typography>
+
           <Box
             sx={{
               flexGrow: 1,
+              ml: "170px",
               display: { xs: "none", md: "flex" },
             }}
           >
@@ -133,7 +147,7 @@ const Navbar = () => {
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
-                component={Link}
+                component={NavLink}
                 to={
                   page === "Home"
                     ? "/"
@@ -141,9 +155,9 @@ const Navbar = () => {
                 }
                 sx={{
                   my: 2,
-                  color: "black",
+                  color: "#482551",
                   display: "block",
-                  "&:hover": { color: "orange" },
+                  "&:hover": { color: "#e65728" },
                 }}
               >
                 {page}
