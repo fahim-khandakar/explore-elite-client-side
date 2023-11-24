@@ -133,7 +133,7 @@ const Navbar = () => {
               className="w-full"
               src="/public/logo-no-background.png"
               alt=""
-            />{" "}
+            />
           </Typography>
 
           <Box
@@ -155,7 +155,7 @@ const Navbar = () => {
                 }
                 sx={{
                   my: 2,
-                  color: "#482551",
+                  color: "#666666",
                   display: "block",
                   "&:hover": { color: "#e65728" },
                 }}
