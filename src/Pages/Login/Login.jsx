@@ -14,13 +14,19 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import animation from "../../assets/Animation - 1700835226561.json";
 import { useLottie } from "lottie-react";
+import { AuthContext } from "../../Providers/AuthProvider";
+import swal from "sweetalert";
 
 const Login = () => {
+  const { signIn, googleSignIn } = useContext(AuthContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const options = {
     animationData: animation,
     loop: true,
@@ -41,7 +47,27 @@ const Login = () => {
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
-    console.log({ email, password });
+
+    signIn(email, password)
+      .then((result) => {
+        console.log(result);
+        navigate(location?.state ? location.state : "/");
+        swal("Success!", "You Are Successfully Login", "success");
+      })
+      .catch((error) => {
+        swal("Error!", error.message, "error");
+      });
+  };
+
+  const handleLoginWithGoogle = () => {
+    googleSignIn()
+      .then(() => {
+        navigate(location?.state ? location.state : "/");
+        swal("Success!", "You Are Successfully Login", "success");
+      })
+      .catch((error) => {
+        swal("Error!", error.message, "error");
+      });
   };
   return (
     <Grid
@@ -58,7 +84,7 @@ const Login = () => {
           mt={3}
           fontWeight={700}
           color={"#e65728"}
-          width={"50%"}
+          sx={{ width: { xs: "80%", md: "50%" } }}
           mx={"auto"}
           textAlign={"center"}
         >
@@ -68,7 +94,7 @@ const Login = () => {
           // variant="contained"
           color={"#666666"}
           my={1}
-          width={"50%"}
+          sx={{ width: { xs: "80%", md: "50%" } }}
           mx={"auto"}
           textAlign={"center"}
         >
@@ -84,8 +110,9 @@ const Login = () => {
             }}
           >
             <TextField
+              required
               name="email"
-              sx={{ width: "50%" }}
+              sx={{ width: { xs: "80%", md: "50%" } }}
               label="Email"
               variant="outlined"
             />
@@ -98,11 +125,16 @@ const Login = () => {
               justifyContent: "center",
             }}
           >
-            <FormControl my={3} sx={{ m: 1, width: "50%" }} variant="outlined">
+            <FormControl
+              my={3}
+              sx={{ width: { xs: "80%", md: "50%" } }}
+              variant="outlined"
+            >
               <InputLabel htmlFor="outlined-adornment-password">
                 Password
               </InputLabel>
               <OutlinedInput
+                required
                 name="password"
                 id="outlined-adornment-password"
                 type={showPassword ? "text" : "password"}
@@ -123,11 +155,17 @@ const Login = () => {
             </FormControl>
           </Box>
           <Box sx={{ display: "flex", justifyContent: "center" }}>
-            <Button type="submit" sx={{ width: "50%" }} variant="contained">
+            <Button
+              type="submit"
+              sx={{ width: { xs: "80%", md: "50%" } }}
+              variant="contained"
+            >
               Register
             </Button>
           </Box>
-          <Divider sx={{ width: "50%", margin: "12px auto" }}>
+          <Divider
+            sx={{ width: { xs: "80%", md: "50%" }, margin: "12px auto" }}
+          >
             <Chip label="or" />
           </Divider>
           <Typography
@@ -135,7 +173,7 @@ const Login = () => {
             fontSize={"12px"}
             textAlign={"center"}
             mx={"auto"}
-            width={"50%"}
+            sx={{ width: { xs: "80%", md: "50%" } }}
           >
             Continue using the following:
           </Typography>
@@ -143,8 +181,7 @@ const Login = () => {
 
         <Box my={3} sx={{ display: "flex", justifyContent: "center" }}>
           <Button
-            // variant="contained"
-
+            onClick={handleLoginWithGoogle}
             sx={{
               gap: "15px",
               width: "50%",
@@ -155,7 +192,7 @@ const Login = () => {
             <FcGoogle></FcGoogle> Google
           </Button>
         </Box>
-        <Typography width={"50%"} mx={"auto"}>
+        <Typography sx={{ width: { xs: "80%", md: "50%" } }} mx={"auto"}>
           Don't have an account yet?
           <Button component={Link} to={"/register"}>
             Sign up now

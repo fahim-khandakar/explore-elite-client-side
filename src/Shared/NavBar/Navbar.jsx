@@ -11,32 +11,45 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import * as React from "react";
+// import * as React from "react";
 import MenuIcon from "@mui/icons-material/Menu";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./Navbar.css";
-
-const login = true;
-const pages = [
-  "Home",
-  "Community",
-  "Blogs",
-  "About Us",
-  "Contact Us",
-  ...(login ? ["Login"] : []),
-  ...(login ? ["Register"] : []),
-];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+import { useContext, useState } from "react";
+import { AuthContext } from "../../Providers/AuthProvider";
+import swal from "sweetalert";
 
 const Navbar = () => {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const { user, loading, logOut, photo } = useContext(AuthContext);
+  const settings = [
+    ...(user ? [user?.displayName] : []),
+    ...(user ? [user?.email] : []),
+    "Dashboard",
+    "Logout",
+  ];
+
+  const pages = [
+    "Home",
+    "Community",
+    "Blogs",
+    "About Us",
+    "Contact Us",
+    ...(user ? [] : ["Login"]),
+    ...(user ? [] : ["Register"]),
+  ];
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
+    if (user) {
+      setAnchorElUser(event.currentTarget);
+    } else {
+      navigate("/login");
+    }
   };
 
   const handleCloseNavMenu = () => {
@@ -45,6 +58,15 @@ const Navbar = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const signOut = () => {
+    logOut()
+      .then(() => {
+        navigate("/");
+        swal("Successfully!", "You Are Log Out", "success");
+      })
+      .catch(() => swal("Opps!", "Something went wrong", "error"));
   };
 
   return (
@@ -168,9 +190,16 @@ const Navbar = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                {user?.photoURL && !loading ? (
+                  <Avatar alt="" src={user.photoURL} />
+                ) : photo ? (
+                  <Avatar alt="" src={photo} />
+                ) : (
+                  <Avatar />
+                )}
               </IconButton>
             </Tooltip>
+
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"
@@ -187,9 +216,32 @@ const Navbar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              {settings.map((setting, index) => (
+                <MenuItem key={index} onClick={() => handleCloseUserMenu()}>
+                  <Typography textAlign="center">
+                    {setting === user?.displayName && (
+                      <span>{user.displayName}</span>
+                    )}
+                    {setting === user?.email && (
+                      <span
+                        style={{
+                          borderBottom: "1px solid #666666",
+                          paddingBottom: "10px",
+                        }}
+                      >
+                        {user.email}
+                      </span>
+                    )}
+                    {setting === "Dashboard" && setting}
+                    {setting === "Logout" && (
+                      <Button
+                        sx={{ padding: "0px", textAlign: "left" }}
+                        onClick={signOut}
+                      >
+                        {setting}
+                      </Button>
+                    )}
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>

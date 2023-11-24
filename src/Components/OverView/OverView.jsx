@@ -1,14 +1,18 @@
+/* eslint-disable react/no-unescaped-entities */
 import { Grid, Typography } from "@mui/material";
 
 const OverView = () => {
   return (
     <Grid>
       <Typography
-        textAlign={"center"}
-        color={"#e65728"}
-        variant="h4"
-        fontWeight={"600"}
-        my={5}
+        sx={{
+          textAlign: "center",
+          color: "#e65728",
+          variant: "h4",
+          fontWeight: 600,
+          my: [3, 4, 5],
+          fontSize: ["1.2rem", "1.5rem", "2rem"], // Responsive font size
+        }}
       >
         Explore Elite: Your Gateway to Extraordinary Journeys
       </Typography>
@@ -48,15 +52,15 @@ const OverView = () => {
             </Typography>
           </Grid>
         </Grid>
-        <Grid width={{ xs: 1, md: 1 / 2 }}>
+        <Grid item xs={12} md={6} sx={{ width: "100%", textAlign: "center" }}>
           <iframe
-            width="560"
+            width="100%"
             height="315"
             src="https://www.youtube.com/embed/MOh4bZuzcCc?si=_0SIIbQ6Fd5eS1wF"
             title="YouTube video player"
-            frameborder="0"
+            frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen
+            allowFullScreen
           ></iframe>
         </Grid>
       </Grid>

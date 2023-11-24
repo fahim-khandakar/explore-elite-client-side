@@ -15,11 +15,18 @@ import {
 import { FcGoogle } from "react-icons/fc";
 import { useLottie } from "lottie-react";
 import animation from "../../assets/Animation - 1700828682050.json";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import swal from "sweetalert";
+import { AuthContext } from "../../Providers/AuthProvider";
 
 const Register = () => {
+  const { createUser, googleSignIn, updateUserProfile } =
+    useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const options = {
     animationData: animation,
     loop: true,
@@ -43,7 +50,44 @@ const Register = () => {
     const email = form.email.value;
     const photoURL = form.photoURL.value;
     const password = form.password.value;
-    console.log({ name, email, photoURL, password });
+
+    if (password.length < 6) {
+      return swal(
+        "Error!",
+        "Password should be at least 6 characters!",
+        "error"
+      );
+    } else if (!/[A-Z]/.test(password)) {
+      return swal("Error!", "Password must have a capital letter!", "error");
+    } else if (!/[^a-zA-Z0-9\s]/.test(password)) {
+      return swal("Error!", "Password must have a special character!", "error");
+    }
+
+    createUser(email, password, name, photoURL)
+      .then((result) => {
+        updateUserProfile(name, photoURL)
+          .then(() => {
+            navigate(location?.state ? location.state : "/");
+          })
+          .catch();
+        console.log(result);
+        swal("Success!", "Successfully Account Created", "success");
+        e.target.reset();
+      })
+      .catch((error) => {
+        swal("Error!", error.message, "error");
+      });
+  };
+
+  const handleLoginWithGoogle = () => {
+    googleSignIn()
+      .then(() => {
+        navigate(location?.state ? location.state : "/");
+        swal("Success!", "Successfully Account Created", "success");
+      })
+      .catch((error) => {
+        swal("Error!", error.message, "error");
+      });
   };
   return (
     <Grid
@@ -60,7 +104,7 @@ const Register = () => {
           mt={3}
           fontWeight={700}
           color={"#e65728"}
-          width={"50%"}
+          width={{ xs: "80%", md: "50%" }}
           mx={"auto"}
           textAlign={"center"}
         >
@@ -70,7 +114,7 @@ const Register = () => {
           // variant="contained"
           color={"#666666"}
           my={1}
-          width={"50%"}
+          width={{ xs: "80%", md: "50%" }}
           mx={"auto"}
           textAlign={"center"}
         >
@@ -86,8 +130,9 @@ const Register = () => {
             }}
           >
             <TextField
+              required
               name="name"
-              sx={{ width: "50%" }}
+              sx={{ width: { xs: "80%", md: "50%" } }}
               label="Name"
               variant="outlined"
             />
@@ -101,8 +146,9 @@ const Register = () => {
             }}
           >
             <TextField
+              required
               name="email"
-              sx={{ width: "50%" }}
+              sx={{ width: { xs: "80%", md: "50%" } }}
               label="Email"
               variant="outlined"
             />
@@ -116,8 +162,9 @@ const Register = () => {
             }}
           >
             <TextField
+              required
               name="photoURL"
-              sx={{ width: "50%" }}
+              sx={{ width: { xs: "80%", md: "50%" } }}
               label="Photo URL"
               variant="outlined"
             />
@@ -130,11 +177,16 @@ const Register = () => {
               justifyContent: "center",
             }}
           >
-            <FormControl my={3} sx={{ m: 1, width: "50%" }} variant="outlined">
+            <FormControl
+              my={3}
+              sx={{ width: { xs: "80%", md: "50%" } }}
+              variant="outlined"
+            >
               <InputLabel htmlFor="outlined-adornment-password">
                 Password
               </InputLabel>
               <OutlinedInput
+                required
                 name="password"
                 id="outlined-adornment-password"
                 type={showPassword ? "text" : "password"}
@@ -155,11 +207,17 @@ const Register = () => {
             </FormControl>
           </Box>
           <Box sx={{ display: "flex", justifyContent: "center" }}>
-            <Button type="submit" sx={{ width: "50%" }} variant="contained">
+            <Button
+              type="submit"
+              sx={{ width: { xs: "80%", md: "50%" } }}
+              variant="contained"
+            >
               Register
             </Button>
           </Box>
-          <Divider sx={{ width: "50%", margin: "12px auto" }}>
+          <Divider
+            sx={{ width: { xs: "80%", md: "50%" }, margin: "12px auto" }}
+          >
             <Chip label="or" />
           </Divider>
           <Typography
@@ -167,7 +225,7 @@ const Register = () => {
             fontSize={"12px"}
             textAlign={"center"}
             mx={"auto"}
-            width={"50%"}
+            sx={{ width: { xs: "80%", md: "50%" } }}
           >
             Continue using the following:
           </Typography>
@@ -176,10 +234,10 @@ const Register = () => {
         <Box my={3} sx={{ display: "flex", justifyContent: "center" }}>
           <Button
             // variant="contained"
-
+            onClick={handleLoginWithGoogle}
             sx={{
+              width: { xs: "80%", md: "50%" },
               gap: "15px",
-              width: "50%",
               fontSize: "14px",
               border: "1px solid #666666",
             }}
@@ -187,7 +245,7 @@ const Register = () => {
             <FcGoogle></FcGoogle> Google
           </Button>
         </Box>
-        <Typography width={"50%"} mx={"auto"}>
+        <Typography sx={{ width: { xs: "80%", md: "50%" } }} mx={"auto"}>
           Already have an account?{" "}
           <Button component={Link} to={"/login"}>
             Please Login

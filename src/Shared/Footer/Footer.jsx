@@ -15,14 +15,14 @@ const Footer = () => {
   ];
 
   return (
-    <Paper elevation={3} style={{ padding: "20px", marginTop: "20px" }}>
+    <Paper elevation={3} sx={{ padding: "20px", marginTop: "20px" }}>
       <Grid container spacing={2} justifyContent="center">
-        <Grid item textAlign={"center"}>
+        <Grid item xs={10} sm={6} md={4} textAlign="center">
           {/* Your Logo */}
           <img
             src={logo}
             alt="Explore Elite"
-            style={{ width: "200px", height: "auto" }}
+            style={{ width: "100%", height: "auto" }}
           />
         </Grid>
         <Grid item xs={12}>
@@ -31,7 +31,6 @@ const Footer = () => {
               <Grid item key={index}>
                 <Button
                   key={index}
-                  // onClick={handleCloseNavMenu}
                   component={Link}
                   to={
                     link === "Home"
