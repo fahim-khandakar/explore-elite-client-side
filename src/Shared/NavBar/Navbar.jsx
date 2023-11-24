@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 // import * as React from "react";
 import MenuIcon from "@mui/icons-material/Menu";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../Providers/AuthProvider";
@@ -232,7 +232,15 @@ const Navbar = () => {
                         {user.email}
                       </span>
                     )}
-                    {setting === "Dashboard" && setting}
+                    {setting === "Dashboard" && (
+                      <Button
+                        sx={{ padding: "0px", textAlign: "left" }}
+                        component={Link}
+                        to={`/dashboard/touristProfile`}
+                      >
+                        {setting}
+                      </Button>
+                    )}
                     {setting === "Logout" && (
                       <Button
                         sx={{ padding: "0px", textAlign: "left" }}
