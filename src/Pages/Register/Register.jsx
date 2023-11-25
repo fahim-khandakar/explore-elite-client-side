@@ -78,14 +78,15 @@ const Register = () => {
             axiosPublic.post("/users", userInfo).then((res) => {
               if (res.data.insertedId) {
                 console.log("user added to the database");
+                form.reset();
                 navigate(location?.state ? location.state : "/");
                 swal("Success!", "Successfully Account Created", "success");
-                form.reset();
               }
             });
           })
           .catch();
         console.log(result);
+        e.target.reset();
       })
       .catch((error) => {
         swal("Error!", error.message, "error");
@@ -95,19 +96,21 @@ const Register = () => {
   const handleLoginWithGoogle = () => {
     googleSignIn()
       .then((res) => {
-        const userInfo = {
+        const googleInfo = {
           name: res?.user?.displayName,
           email: res?.user?.email,
           role: "tourist",
         };
-        axiosPublic.post("/users", userInfo).then((res) => {
+        axiosPublic.post("/users", googleInfo).then((res) => {
           if (res.data.insertedId) {
             console.log("user added to the database");
             navigate(location?.state ? location.state : "/");
-
             swal("Success!", "Successfully Account Created", "success");
           }
         });
+
+        navigate(location?.state ? location.state : "/");
+        swal("Success!", "Successfully Account Created", "success");
       })
       .catch((error) => {
         swal("Error!", error.message, "error");

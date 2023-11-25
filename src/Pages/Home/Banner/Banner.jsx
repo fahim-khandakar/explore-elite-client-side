@@ -1,4 +1,4 @@
-import { Button, Grid, Stack, Typography } from "@mui/material";
+import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import { useLottie } from "lottie-react";
 import animation from "../../../assets/Animation - 1700892926443.json";
 import { Link } from "react-router-dom";
@@ -19,7 +19,7 @@ const Banner = () => {
       mt={5}
     >
       <Grid width={{ xs: 1, md: 1 / 2 }}>
-        <Typography
+        <Box
           fontSize={{ xs: 25, md: 70 }}
           fontWeight={800}
           color={"#c83d86"}
@@ -35,7 +35,7 @@ const Banner = () => {
           >
             Explore Elite
           </Typography>
-        </Typography>
+        </Box>
         <Typography
           className="mt-5 text-[#482551] font-semibold"
           color={"#666666"}

@@ -243,9 +243,9 @@ const Navbar = () => {
                         sx={{ padding: "0px", textAlign: "left" }}
                         component={Link}
                         to={`/dashboard/${
-                          isAdmin
+                          user && isAdmin
                             ? "adminProfile"
-                            : isGuide
+                            : user && isGuide
                             ? "guideProfile"
                             : "touristProfile"
                         }`}

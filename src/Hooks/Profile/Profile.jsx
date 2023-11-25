@@ -1,5 +1,7 @@
+import { Grid } from "@mui/material";
+
 const Profile = () => {
-  return <div>Profile</div>;
+  return <Grid></Grid>;
 };
 
 export default Profile;

@@ -18,12 +18,12 @@ export const AuthContext = createContext(null);
 const auth = getAuth(app);
 
 const AuthProvider = ({ children }) => {
+  const googleProvider = new GoogleAuthProvider();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [name, setName] = useState(null);
   const [photo, setPhoto] = useState(null);
   const axiosPublic = userAxiosPublic();
-  const googleProvider = new GoogleAuthProvider();
 
   const createUser = (email, password, name, photoURL) => {
     setPhoto(photoURL);
@@ -56,11 +56,12 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
+      const loggedEmail = currentUser?.email || user?.email;
+      const loggedUser = { email: loggedEmail };
       setUser(currentUser);
       setLoading(false);
       if (currentUser) {
-        const userInfo = { email: currentUser.email };
-        axiosPublic.post("/jwt", userInfo).then((res) => {
+        axiosPublic.post("/jwt", loggedUser).then((res) => {
           if (res.data.token) {
             localStorage.setItem("access-token", res.data.token);
             setLoading(false);
@@ -70,13 +71,13 @@ const AuthProvider = ({ children }) => {
         // something i do
         localStorage.removeItem("access-token");
         setLoading(false);
-        setPhoto("");
+        setPhoto(" ");
       }
     });
     return () => {
       return unSubscribe();
     };
-  }, [axiosPublic]);
+  }, [axiosPublic, user]);
 
   const authInfo = {
     user,
