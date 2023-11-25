@@ -18,6 +18,7 @@ import "./Navbar.css";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../Providers/AuthProvider";
 import swal from "sweetalert";
+import brandLogo from "../../assets/logo-no-background.png";
 
 const Navbar = () => {
   const { user, loading, logOut, photo } = useContext(AuthContext);
@@ -77,7 +78,7 @@ const Navbar = () => {
         color: "#e65728",
       }}
     >
-      <Container maxWidth="xl">
+      <Container maxWidth="lg">
         <Toolbar disableGutters>
           <Typography
             variant="h6"
@@ -90,7 +91,7 @@ const Navbar = () => {
               height: "40px",
             }}
           >
-            <img src="/public/logo-no-background.png" alt="" />
+            <img src={brandLogo} alt="" />
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>

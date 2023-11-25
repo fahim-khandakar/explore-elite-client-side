@@ -1,4 +1,68 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap");
 body {
   font-family: "Roboto", sans-serif;
+
+  font-family: sans-serif;
+  --black: #000000;
+  --ash-black: #222;
+  --white: #fafafa;
+  --sky: #00ccff;
+  --green: #22dddd;
+  --blue: #1300ff;
+  --dusk: #6600ff;
+  --purple: #9900ff;
+  --pink: #e65728;
+  --red: #fe0222;
+  --orange: #fd7702;
+  --yellow: #ffbb00;
+
+  --background: var(--white);
+  --accent: var(--pink);
+}
+
+::-webkit-scrollbar {
+  height: 5px;
+  width: 5px;
+  background: var(--background);
+  -webkit-border-radius: 1ex;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  -webkit-border-radius: 1ex;
+}
+
+::-webkit-scrollbar-corner {
+  background: #fff3;
+}
+
+.progress-wheel {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  transform: rotate(-90deg);
+}
+
+.progress-wheel circle {
+  stroke-dashoffset: 0;
+  stroke-width: 30%;
+  fill: none;
+}
+
+.progress-wheel .bg {
+  stroke: var(--accent);
+  opacity: 0.2;
+}
+
+.progress-wheel .progress {
+  stroke: var(--accent);
+  stroke-dasharray: 0, 1;
+}
+
+@media only screen and (max-width: 768px) {
+  .progress-wheel {
+    top: 55px;
+    left: 10px;
+    z-index: 1;
+  }
 }

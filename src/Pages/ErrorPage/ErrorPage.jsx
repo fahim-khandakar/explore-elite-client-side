@@ -2,6 +2,8 @@
 import { Link } from "react-router-dom";
 import { useLottie } from "lottie-react";
 import animation from "../../assets/Animation - 1699122041602.json";
+import { Helmet } from "react-helmet-async";
+import { Button, Grid } from "@mui/material";
 
 const ErrorPage = () => {
   const options = {
@@ -12,12 +14,24 @@ const ErrorPage = () => {
   const { View } = useLottie(options);
   return (
     <div>
-      <div className="flex justify-center p-5 md:p-0  flex-col gap-5 items-center text-xl text-center h-screen">
+      <Helmet>
+        <title>Explore Elite | Error</title>
+      </Helmet>
+      <Grid
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "column",
+          gap: "20px",
+          alignItems: "center",
+          height: screen,
+        }}
+      >
         {View}
         <Link to="/">
-          <button className="btn btn-error">Back To Home</button>
+          <Button variant="contained">Back To Home</Button>
         </Link>
-      </div>
+      </Grid>
     </div>
   );
 };

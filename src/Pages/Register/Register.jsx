@@ -20,6 +20,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 import { AuthContext } from "../../Providers/AuthProvider";
+import { Helmet } from "react-helmet-async";
 
 const Register = () => {
   const { createUser, googleSignIn, updateUserProfile } =
@@ -97,6 +98,9 @@ const Register = () => {
       // alignItems={"center"}
       justifyContent={"space-around"}
     >
+      <Helmet>
+        <title>Explore Elite || Register</title>
+      </Helmet>
       <Grid width={{ xs: 1, md: 1 / 2 }}>{View}</Grid>
       <Grid width={{ xs: 1, md: 1 / 2 }}>
         <Typography

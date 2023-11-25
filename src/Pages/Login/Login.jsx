@@ -21,6 +21,7 @@ import animation from "../../assets/Animation - 1700835226561.json";
 import { useLottie } from "lottie-react";
 import { AuthContext } from "../../Providers/AuthProvider";
 import swal from "sweetalert";
+import { Helmet } from "react-helmet-async";
 
 const Login = () => {
   const { signIn, googleSignIn } = useContext(AuthContext);
@@ -77,6 +78,9 @@ const Login = () => {
       alignItems={"center"}
       justifyContent={"space-around"}
     >
+      <Helmet>
+        <title>Explore Elite || Login</title>
+      </Helmet>
       <Grid width={{ xs: 1, md: 1 / 3 }}>{View}</Grid>
       <Grid width={{ xs: 1, md: 1 / 2 }}>
         <Typography
