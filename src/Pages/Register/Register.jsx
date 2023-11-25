@@ -21,10 +21,12 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 import { AuthContext } from "../../Providers/AuthProvider";
 import { Helmet } from "react-helmet-async";
+import userAxiosPublic from "../../Hooks/useAxiosPublic";
 
 const Register = () => {
   const { createUser, googleSignIn, updateUserProfile } =
     useContext(AuthContext);
+  const axiosPublic = userAxiosPublic();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -68,12 +70,22 @@ const Register = () => {
       .then((result) => {
         updateUserProfile(name, photoURL)
           .then(() => {
-            navigate(location?.state ? location.state : "/");
+            const userInfo = {
+              name: name,
+              email: email,
+              role: "tourist",
+            };
+            axiosPublic.post("/users", userInfo).then((res) => {
+              if (res.data.insertedId) {
+                console.log("user added to the database");
+                navigate(location?.state ? location.state : "/");
+                swal("Success!", "Successfully Account Created", "success");
+                form.reset();
+              }
+            });
           })
           .catch();
         console.log(result);
-        swal("Success!", "Successfully Account Created", "success");
-        e.target.reset();
       })
       .catch((error) => {
         swal("Error!", error.message, "error");
@@ -82,9 +94,20 @@ const Register = () => {
 
   const handleLoginWithGoogle = () => {
     googleSignIn()
-      .then(() => {
-        navigate(location?.state ? location.state : "/");
-        swal("Success!", "Successfully Account Created", "success");
+      .then((res) => {
+        const userInfo = {
+          name: res?.user?.displayName,
+          email: res?.user?.email,
+          role: "tourist",
+        };
+        axiosPublic.post("/users", userInfo).then((res) => {
+          if (res.data.insertedId) {
+            console.log("user added to the database");
+            navigate(location?.state ? location.state : "/");
+
+            swal("Success!", "Successfully Account Created", "success");
+          }
+        });
       })
       .catch((error) => {
         swal("Error!", error.message, "error");

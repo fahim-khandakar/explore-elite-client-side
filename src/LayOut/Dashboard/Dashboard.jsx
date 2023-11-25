@@ -1,10 +1,12 @@
 import { Container, Grid, Paper, Typography } from "@mui/material";
 import { Outlet, NavLink as RouterLink } from "react-router-dom";
 import "./Dashboard.css";
+import useGuide from "../../Hooks/useGuide";
+import useAdmin from "../../Hooks/useAdmin";
 
 const Dashboard = () => {
-  const tourGuide = false;
-  const admin = true;
+  const { isGuide, isGuideLoading } = useGuide();
+  const { isAdmin, isAdminLoading } = useAdmin();
   return (
     <Container maxWidth="xl">
       <Grid sx={{ display: "flex", gap: "40px", my: 2 }}>
@@ -15,7 +17,7 @@ const Dashboard = () => {
             minHeight: "100vh",
           }}
         >
-          {tourGuide ? (
+          {!isGuideLoading && isGuide ? (
             <Grid
               container
               sx={{
@@ -50,7 +52,7 @@ const Dashboard = () => {
                 My Assign Tours
               </Typography>
             </Grid>
-          ) : admin ? (
+          ) : !isAdminLoading && isAdmin ? (
             <Grid
               container
               sx={{

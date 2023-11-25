@@ -1,11 +1,5 @@
-import Profile from "../../Hooks/Profile/Profile";
-
 const TouristProfile = () => {
-  return (
-    <div>
-      <Profile></Profile>
-    </div>
-  );
+  return <div>tourist profile</div>;
 };
 
 export default TouristProfile;

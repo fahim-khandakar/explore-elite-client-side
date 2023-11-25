@@ -12,6 +12,7 @@ import {
 } from "firebase/auth";
 
 import { app } from "../firebase/firebase.config";
+import userAxiosPublic from "../Hooks/useAxiosPublic";
 
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
@@ -21,7 +22,7 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [name, setName] = useState(null);
   const [photo, setPhoto] = useState(null);
-
+  const axiosPublic = userAxiosPublic();
   const googleProvider = new GoogleAuthProvider();
 
   const createUser = (email, password, name, photoURL) => {
@@ -57,24 +58,25 @@ const AuthProvider = ({ children }) => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
-      //   if (currentUser) {
-      //     const userInfo = { email: currentUser.email };
-      //     axiosPublic.post("/jwt", userInfo).then((res) => {
-      //       if (res.data.token) {
-      //         localStorage.setItem("access-token", res.data.token);
-      //         setLoading(false);
-      //       }
-      //     });
-      //   } else {
-      //     // something i do
-      //     localStorage.removeItem("access-token");
-      //     setLoading(false);
-      //   }
+      if (currentUser) {
+        const userInfo = { email: currentUser.email };
+        axiosPublic.post("/jwt", userInfo).then((res) => {
+          if (res.data.token) {
+            localStorage.setItem("access-token", res.data.token);
+            setLoading(false);
+          }
+        });
+      } else {
+        // something i do
+        localStorage.removeItem("access-token");
+        setLoading(false);
+        setPhoto("");
+      }
     });
     return () => {
       return unSubscribe();
     };
-  }, []);
+  }, [axiosPublic]);
 
   const authInfo = {
     user,

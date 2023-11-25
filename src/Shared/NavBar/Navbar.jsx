@@ -19,9 +19,14 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../Providers/AuthProvider";
 import swal from "sweetalert";
 import brandLogo from "../../assets/logo-no-background.png";
+import useAdmin from "../../Hooks/useAdmin";
+import useGuide from "../../Hooks/useGuide";
 
 const Navbar = () => {
   const { user, loading, logOut, photo } = useContext(AuthContext);
+  const { isAdmin } = useAdmin();
+  const { isGuide } = useGuide();
+
   const settings = [
     ...(user ? [user?.displayName] : []),
     ...(user ? [user?.email] : []),
@@ -237,7 +242,13 @@ const Navbar = () => {
                       <Button
                         sx={{ padding: "0px", textAlign: "left" }}
                         component={Link}
-                        to={`/dashboard/touristProfile`}
+                        to={`/dashboard/${
+                          isAdmin
+                            ? "adminProfile"
+                            : isGuide
+                            ? "guideProfile"
+                            : "touristProfile"
+                        }`}
                       >
                         {setting}
                       </Button>
