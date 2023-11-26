@@ -6,11 +6,7 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
-  FormControl,
   Grid,
-  InputLabel,
-  MenuItem,
-  Select,
   TextField,
   Typography,
 } from "@mui/material";

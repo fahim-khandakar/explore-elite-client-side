@@ -11,26 +11,21 @@ import {
 } from "@mui/material";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
-import swal from "sweetalert";
+import { Link as RouterLink } from "react-router-dom";
 
-const ManageUsers = () => {
-  const [buttonsDisabled, setButtonsDisabled] = useState(false);
+const GuideList = () => {
   const axiosSecure = useAxiosSecure();
   const {
     data: users = [],
     // isLoading: isUsersLoading,
-    refetch,
+    // refetch,
   } = useQuery({
-    queryKey: ["users"],
+    queryKey: ["usersDetails"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/users");
+      const res = await axiosSecure.get("/users/guide");
       return res.data;
     },
   });
-
-  console.log(users);
-
   function createData(photo, name, email, role, id) {
     return { photo, name, email, role, id };
   }
@@ -38,35 +33,6 @@ const ManageUsers = () => {
   const rows = users.map((user) =>
     createData(user.photo, user.name, user.email, user.role, user._id)
   );
-
-  const handleMakeAdmin = (id) => {
-    // Your logic for making admin goes here
-    const res = axiosSecure.put(`/users/makeAdmin/${id}`);
-    res.then((res) => {
-      if (res.data.modifiedCount > 0) {
-        swal("success", "The user has been updated successfully");
-        refetch();
-        setButtonsDisabled(true);
-      } else {
-        swal("error", "An error has occurred while updating the user", "error");
-        setButtonsDisabled(false);
-      }
-    });
-  };
-
-  const handleMakeGuide = (id) => {
-    const res = axiosSecure.put(`/users/makeGuide/${id}`);
-    res.then((res) => {
-      if (res.data.modifiedCount > 0) {
-        swal("success", "The user has been updated successfully");
-        refetch();
-        setButtonsDisabled(true);
-      } else {
-        swal("error", "An error has occurred while updating the user", "error");
-        setButtonsDisabled(false);
-      }
-    });
-  };
 
   return (
     <TableContainer component={Paper}>
@@ -77,7 +43,6 @@ const ManageUsers = () => {
             <TableCell>Name</TableCell>
             <TableCell align="right">Email</TableCell>
             <TableCell align="right">Role</TableCell>
-            <TableCell align="right">Action</TableCell>
             <TableCell align="right">Action</TableCell>
           </TableRow>
         </TableHead>
@@ -101,22 +66,14 @@ const ManageUsers = () => {
               </TableCell>
               <TableCell align="right">{row.email}</TableCell>
               <TableCell align="right">{row.role}</TableCell>
+
               <TableCell align="right">
                 <Button
+                  component={RouterLink}
+                  to={`/guideDetails/${row.id}`}
                   variant="contained"
-                  onClick={() => handleMakeAdmin(row.id)}
-                  disabled={buttonsDisabled}
                 >
-                  Make Admin
-                </Button>
-              </TableCell>
-              <TableCell align="right">
-                <Button
-                  variant="contained"
-                  onClick={() => handleMakeGuide(row.id)}
-                  disabled={buttonsDisabled}
-                >
-                  Make Guide
+                  View Details
                 </Button>
               </TableCell>
             </TableRow>
@@ -127,4 +84,4 @@ const ManageUsers = () => {
   );
 };
 
-export default ManageUsers;
+export default GuideList;

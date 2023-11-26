@@ -14,6 +14,9 @@ import AddPackage from "../Pages/AddPackage/AddPackage";
 import ManageUsers from "../Pages/ManageUsers/ManageUsers";
 import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 import Profile from "../Pages/profile/profile";
+import AllPackages from "../Pages/AllPackages/AllPackages";
+import PackageDetails from "../Pages/PackageDetails/PackageDetails";
+import GuideDetails from "../Pages/GuideDetails/GuideDetails";
 
 export const router = createBrowserRouter([
   {
@@ -32,6 +35,18 @@ export const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register></Register>,
+      },
+      {
+        path: "/allPackages",
+        element: <AllPackages></AllPackages>,
+      },
+      {
+        path: "/packageDetails/:id",
+        element: <PackageDetails></PackageDetails>,
+      },
+      {
+        path: "/guideDetails/:id",
+        element: <GuideDetails></GuideDetails>,
       },
       {
         path: "/dashboard",

@@ -44,6 +44,7 @@ const AuthProvider = ({ children }) => {
 
   const logOut = () => {
     setLoading(true);
+    setPhoto("");
     return signOut(auth);
   };
 
@@ -71,7 +72,6 @@ const AuthProvider = ({ children }) => {
         // something i do
         localStorage.removeItem("access-token");
         setLoading(false);
-        setPhoto(" ");
       }
     });
     return () => {

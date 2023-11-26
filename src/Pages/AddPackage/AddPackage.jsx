@@ -1,17 +1,28 @@
-import { Button, Grid, TextField } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import swal from "sweetalert";
+import { useState } from "react";
 
 const AddPackage = () => {
   const axiosSecure = useAxiosSecure();
+  const [type, setType] = useState("");
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
     const name = form.name.value;
-    const photoURl = form.photoURL.value;
+    const photoURL = form.photoURL.value;
     const details = form.details.value;
     const price = form.price.value;
-    const packageInfo = { name, photoURl, details, price };
+    const packageInfo = { name, photoURL, details, price, type };
 
     const res = axiosSecure.post("/addPackage", packageInfo);
     res
@@ -25,7 +36,11 @@ const AddPackage = () => {
         console.log(err);
       });
 
-    console.log(name, photoURl, details, price);
+    console.log(name, photoURL, details, price);
+  };
+
+  const handleChange = (event) => {
+    setType(event.target.value);
   };
   return (
     <Grid>
@@ -38,6 +53,21 @@ const AddPackage = () => {
           margin="normal"
           required
         />
+
+        <FormControl fullWidth>
+          <InputLabel id="select-label">Select a Type</InputLabel>
+          <Select
+            labelId="select-label"
+            id="select"
+            value={type}
+            label="Select an Option"
+            onChange={handleChange}
+          >
+            <MenuItem value="cultural">Cultural</MenuItem>
+            <MenuItem value="adventure">Adventure</MenuItem>
+            <MenuItem value="walking">Walking</MenuItem>
+          </Select>
+        </FormControl>
 
         <TextField
           label="PhotoURL"
