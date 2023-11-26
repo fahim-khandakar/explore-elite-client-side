@@ -74,6 +74,7 @@ const Register = () => {
               name: name,
               email: email,
               role: "tourist",
+              photo: photoURL,
             };
             axiosPublic.post("/users", userInfo).then((res) => {
               if (res.data.insertedId) {
@@ -100,6 +101,7 @@ const Register = () => {
           name: res?.user?.displayName,
           email: res?.user?.email,
           role: "tourist",
+          photo: res?.user?.photoURL,
         };
         axiosPublic.post("/users", googleInfo).then((res) => {
           if (res.data.insertedId) {
@@ -108,9 +110,8 @@ const Register = () => {
             swal("Success!", "Successfully Account Created", "success");
           }
         });
-
-        navigate(location?.state ? location.state : "/");
-        swal("Success!", "Successfully Account Created", "success");
+        // navigate(location?.state ? location.state : "/");
+        // swal("Success!", "Successfully Account Created", "success");
       })
       .catch((error) => {
         swal("Error!", error.message, "error");

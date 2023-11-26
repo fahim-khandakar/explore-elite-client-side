@@ -30,7 +30,7 @@ const Dashboard = () => {
               <Typography variant="h6">Dashboard Menu</Typography>
               <Typography
                 component={RouterLink}
-                to={`/dashboard/GuideProfile`}
+                to={`/dashboard/profile`}
                 sx={{
                   textDecoration: "none",
 
@@ -65,7 +65,7 @@ const Dashboard = () => {
               <Typography variant="h6">Dashboard Menu</Typography>
               <Typography
                 component={RouterLink}
-                to={`/dashboard/adminProfile`}
+                to={`/dashboard/profile`}
                 sx={{
                   textDecoration: "none",
 
@@ -111,7 +111,7 @@ const Dashboard = () => {
               <Typography variant="h6">Dashboard Menu</Typography>
               <Typography
                 component={RouterLink}
-                to={`/dashboard/touristProfile`}
+                to={`/dashboard/profile`}
                 sx={{
                   textDecoration: "none",
 

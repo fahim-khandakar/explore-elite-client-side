@@ -4,15 +4,16 @@ import Home from "../Pages/Home/Home/Home";
 import Login from "../Pages/Login/Login";
 import Register from "../Pages/Register/Register";
 import Dashboard from "../LayOut/Dashboard/Dashboard";
-import TouristProfile from "../Pages/TouristProfile/TouristProfile";
+// import TouristProfile from "../Pages/TouristProfile/TouristProfile";
 import TouristBookings from "../Pages/TouristBookings/TouristBookings";
 import TouristWishlist from "../Pages/TouristWishlist/TouristWishlist";
 import GuideAssignTour from "../Pages/GuideAssignTours/GuideAssignTour";
-import GuideProfile from "../Pages/GuideProfile/GuideProfile";
-import AdminProfile from "../Pages/AdminProfile/AdminProfile";
+// import GuideProfile from "../Pages/GuideProfile/GuideProfile";
+// import AdminProfile from "../Pages/AdminProfile/AdminProfile";
 import AddPackage from "../Pages/AddPackage/AddPackage";
 import ManageUsers from "../Pages/ManageUsers/ManageUsers";
 import ErrorPage from "../Pages/ErrorPage/ErrorPage";
+import Profile from "../Pages/profile/profile";
 
 export const router = createBrowserRouter([
   {
@@ -36,9 +37,13 @@ export const router = createBrowserRouter([
         path: "/dashboard",
         element: <Dashboard></Dashboard>,
         children: [
+          // {
+          //   path: "touristProfile",
+          //   element: <TouristProfile></TouristProfile>,
+          // },
           {
-            path: "touristProfile",
-            element: <TouristProfile></TouristProfile>,
+            path: "profile",
+            element: <Profile></Profile>,
           },
           {
             path: "touristBookings",
@@ -52,15 +57,15 @@ export const router = createBrowserRouter([
             path: "guideAssignTours",
             element: <GuideAssignTour></GuideAssignTour>,
           },
-          {
-            path: "guideProfile",
-            element: <GuideProfile></GuideProfile>,
-          },
+          // {
+          //   path: "guideProfile",
+          //   element: <GuideProfile></GuideProfile>,
+          // },
           // admin route
-          {
-            path: "adminProfile",
-            element: <AdminProfile></AdminProfile>,
-          },
+          // {
+          //   path: "adminProfile",
+          //   element: <AdminProfile></AdminProfile>,
+          // },
           {
             path: "addPackage",
             element: <AddPackage></AddPackage>,
