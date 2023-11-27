@@ -66,6 +66,8 @@ const AddPackage = () => {
             <MenuItem value="cultural">Cultural</MenuItem>
             <MenuItem value="adventure">Adventure</MenuItem>
             <MenuItem value="walking">Walking</MenuItem>
+            <MenuItem value="walking">Urban</MenuItem>
+            <MenuItem value="walking">Nature</MenuItem>
           </Select>
         </FormControl>
 

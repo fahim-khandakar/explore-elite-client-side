@@ -47,7 +47,7 @@ const BookingForm = ({ price, name }) => {
     isLoading: isUsersLoading,
     // refetch,
   } = useQuery({
-    queryKey: ["usersForBooking"],
+    queryKey: ["usersForBooking", price],
     queryFn: async () => {
       const res = await axiosPublic.get("/users/guide");
       return res.data;
@@ -106,131 +106,135 @@ const BookingForm = ({ price, name }) => {
   };
   return (
     <Grid sx={{ width: "50%", margin: "auto" }}>
-      <form id="bookingForm" onSubmit={handleSubmit}>
-        <TextField
-          label="Name"
-          name="name"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          required
-          value={user?.displayName}
-        />
+      {user && (
+        <Grid>
+          <form id="bookingForm" onSubmit={handleSubmit}>
+            <TextField
+              label="Name"
+              name="name"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              required
+              value={user?.displayName}
+            />
 
-        <TextField
-          label="Email"
-          name="email"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          type="email"
-          value={user?.email}
-          required
-        />
+            <TextField
+              label="Email"
+              name="email"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              type="email"
+              value={user?.email}
+              required
+            />
 
-        <TextField
-          label="PhotoURL"
-          name="photo"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={user?.photoURL}
-          type="text"
-          required
-        />
+            <TextField
+              label="PhotoURL"
+              name="photo"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              value={user?.photoURL}
+              type="text"
+              required
+            />
 
-        <TextField
-          sx={{ marginBottom: "15px" }}
-          label="Price"
-          disabled
-          name="price"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          type="number"
-          value={price}
-          required
-        />
+            <TextField
+              sx={{ marginBottom: "15px" }}
+              label="Price"
+              disabled
+              name="price"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              type="number"
+              value={price}
+              required
+            />
 
-        <label style={{ margin: "0px 10px 0px 0px" }}>Date:</label>
-        <DatePicker
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
-        />
+            <label style={{ margin: "0px 10px 0px 0px" }}>Date:</label>
+            <DatePicker
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+            />
 
-        <FormControl sx={{ marginTop: "15px" }} fullWidth>
-          <InputLabel id="select-label">Select a guide</InputLabel>
-          <Select
-            labelId="select-label"
-            id="select"
-            value={type}
-            label="Select an Option"
-            onChange={handleChange}
+            <FormControl sx={{ marginTop: "15px" }} fullWidth>
+              <InputLabel id="select-label">Select a guide</InputLabel>
+              <Select
+                labelId="select-label"
+                id="select"
+                value={type}
+                label="Select an Option"
+                onChange={handleChange}
+              >
+                {users.map((user, index) => (
+                  <MenuItem key={index} value={user}>
+                    {user?.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            {user ? (
+              <Button
+                onClick={handleOpen}
+                // type="submit"
+                sx={{ marginTop: "30px" }}
+                variant="contained"
+                color="primary"
+              >
+                Booking Now
+              </Button>
+            ) : (
+              <Button
+                disabled
+                // type="submit"
+                sx={{ marginTop: "30px" }}
+                variant="contained"
+                color="primary"
+              >
+                Booking Confirm
+              </Button>
+            )}
+          </form>
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="parent-modal-title"
+            aria-describedby="parent-modal-description"
           >
-            {users.map((user, index) => (
-              <MenuItem key={index} value={user}>
-                {user?.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        {user ? (
-          <Button
-            onClick={handleOpen}
-            // type="submit"
-            sx={{ marginTop: "30px" }}
-            variant="contained"
-            color="primary"
-          >
-            Booking Now
-          </Button>
-        ) : (
-          <Button
-            disabled
-            // type="submit"
-            sx={{ marginTop: "30px" }}
-            variant="contained"
-            color="primary"
-          >
-            Booking Confirm
-          </Button>
-        )}
-      </form>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="parent-modal-title"
-        aria-describedby="parent-modal-description"
-      >
-        <Box sx={{ ...style, width: 400 }}>
-          <h2 id="parent-modal-title">Trip: {name}</h2>
-          <p id="parent-modal-description">Please Confirm Your Booking</p>
-          <Grid display={"flex"} justifyContent={"space-around"}>
-            <Button
-              type="submit"
-              sx={{ marginTop: "30px" }}
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                handleSubmit();
-                handleClose();
-              }}
-            >
-              Booking Confirm
-            </Button>
-            <Button
-              sx={{ marginTop: "30px" }}
-              variant="contained"
-              color="primary"
-              component={RouterLink}
-              to={"/dashboard/touristBookings"}
-            >
-              Booking List
-            </Button>
-          </Grid>
-        </Box>
-      </Modal>
+            <Box sx={{ ...style, width: 400 }}>
+              <h2 id="parent-modal-title">Trip: {name}</h2>
+              <p id="parent-modal-description">Please Confirm Your Booking</p>
+              <Grid display={"flex"} justifyContent={"space-around"}>
+                <Button
+                  type="submit"
+                  sx={{ marginTop: "30px" }}
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    handleSubmit();
+                    handleClose();
+                  }}
+                >
+                  Booking Confirm
+                </Button>
+                <Button
+                  sx={{ marginTop: "30px" }}
+                  variant="contained"
+                  color="primary"
+                  component={RouterLink}
+                  to={"/dashboard/touristBookings"}
+                >
+                  Booking List
+                </Button>
+              </Grid>
+            </Box>
+          </Modal>
+        </Grid>
+      )}
     </Grid>
   );
 };

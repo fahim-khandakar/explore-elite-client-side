@@ -19,7 +19,7 @@ const TouristBookings = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useContext(AuthContext);
   const { data: bookingsData, isLoading } = useQuery({
-    queryKey: ["bookingsData"],
+    queryKey: ["bookingsData", user],
     queryFn: async () => {
       const res = await axiosSecure.get(`/bookings/?email=${user?.email}`);
       return res.data;
@@ -32,7 +32,7 @@ const TouristBookings = () => {
 
   const rows =
     !isLoading &&
-    bookingsData.map((booking) =>
+    bookingsData?.map((booking) =>
       createData(
         booking.packageName,
         booking.guide.name,
@@ -67,9 +67,9 @@ const TouristBookings = () => {
         </TableHead>
         <TableBody>
           {!isLoading &&
-            rows?.map((row) => (
+            rows?.map((row, index) => (
               <TableRow
-                key={row.id}
+                key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell align="left">{row.packageName}</TableCell>

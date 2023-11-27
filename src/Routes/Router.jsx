@@ -13,10 +13,13 @@ import GuideAssignTour from "../Pages/GuideAssignTours/GuideAssignTour";
 import AddPackage from "../Pages/AddPackage/AddPackage";
 import ManageUsers from "../Pages/ManageUsers/ManageUsers";
 import ErrorPage from "../Pages/ErrorPage/ErrorPage";
-import Profile from "../Pages/profile/profile";
 import AllPackages from "../Pages/AllPackages/AllPackages";
 import PackageDetails from "../Pages/PackageDetails/PackageDetails";
 import GuideDetails from "../Pages/GuideDetails/GuideDetails";
+import ShowByType from "../Pages/ShowByType/ShowByType";
+import StoryDetails from "../Pages/StoryDetails/StoryDetails";
+import AllStories from "../Pages/AllStories/AllStories";
+import Profile from "../Pages/Profile/Profile";
 
 export const router = createBrowserRouter([
   {
@@ -47,6 +50,18 @@ export const router = createBrowserRouter([
       {
         path: "/guideDetails/:id",
         element: <GuideDetails></GuideDetails>,
+      },
+      {
+        path: "/type/:type",
+        element: <ShowByType></ShowByType>,
+      },
+      {
+        path: "/storyDetails/:id",
+        element: <StoryDetails></StoryDetails>,
+      },
+      {
+        path: "/allStories",
+        element: <AllStories></AllStories>,
       },
       {
         path: "/dashboard",

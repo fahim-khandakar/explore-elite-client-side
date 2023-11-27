@@ -15,6 +15,7 @@ import { AuthContext } from "../../../Providers/AuthProvider";
 
 const OurPackage = ({ item }) => {
   const [isFavorite, setIsFavorite] = useState(false);
+  const [open, setOpen] = useState(false);
   const axiosSecure = useAxiosSecure();
   const { user } = useContext(AuthContext);
 
@@ -27,41 +28,51 @@ const OurPackage = ({ item }) => {
     day1: item.day1,
     day2: item.day2,
     day3: item.day3,
-    user: user.email,
-    userName: user.displayName,
+    user: user?.email,
+    userName: user?.displayName,
+    id: item?._id,
   };
 
   if (!item && !user) {
     return;
   }
+
   const handleFavoriteClick = async () => {
     axiosSecure
       .post("/addWish", wish)
       .then(() => {
         swal("success", "Successfully added you wish", "success");
+        setOpen(true);
       })
       .catch((err) => {
         swal("success", `${err.message}`, "success");
+        setOpen(false);
       });
     setIsFavorite(!isFavorite);
   };
   return (
     <Card sx={{ maxWidth: 345, textAlign: "left", margin: "20px 10px" }}>
-      <Typography
-        sx={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "8px" }}
-      >
-        Tour Type: {item.type}
-      </Typography>
-      <Typography sx={{ fontSize: "1.1rem", marginBottom: "4px" }}>
-        Place: {item.name}
-      </Typography>
       <CardMedia
         component="img"
         height="194"
         image={item && item?.photoURL ? item.photoURL : ""}
         alt=""
       />
+
       <CardContent>
+        <Typography
+          color={"#666666"}
+          sx={{ fontSize: "1rem", marginBottom: "8px" }}
+        >
+          Tour Type: {item.type}
+        </Typography>
+        <Typography
+          color={"#e65728"}
+          sx={{ fontSize: "1.1rem", fontWeight: "bold", marginBottom: "8px" }}
+        >
+          Place: {item.name}
+        </Typography>
+
         <Typography variant="body2" color="text.secondary">
           {item.details}
         </Typography>
@@ -80,6 +91,7 @@ const OurPackage = ({ item }) => {
             <IconButton
               aria-label="add to favorites"
               onClick={handleFavoriteClick}
+              disabled={open}
               style={{ color: isFavorite ? "red" : "default" }}
             >
               <FavoriteIcon />

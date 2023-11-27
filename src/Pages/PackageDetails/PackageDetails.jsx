@@ -16,6 +16,7 @@ import BookingForm from "../../Components/BookingForm/BookingForm";
 
 const PackageDetails = () => {
   const { id } = useParams();
+  console.log(id);
   const axiosPublic = userAxiosPublic();
   const { data: packageDetails, isLoading } = useQuery({
     queryKey: ["packageDetails"],
@@ -142,8 +143,8 @@ const PackageDetails = () => {
       <GuideList></GuideList>
       <SectionTitle title={"Booking Form"}></SectionTitle>
       <BookingForm
-        price={packageDetails.price}
-        name={packageDetails.name}
+        price={packageDetails?.price}
+        name={packageDetails?.name}
       ></BookingForm>
     </Container>
   );

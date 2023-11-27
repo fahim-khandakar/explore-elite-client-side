@@ -26,7 +26,6 @@ const TourismTravelGuide = () => {
       return res.data;
     },
   });
-  console.log(guides);
   const { data: packages = [], isLoading } = useQuery({
     queryKey: ["packages"],
     queryFn: async () => {

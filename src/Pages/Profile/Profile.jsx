@@ -1,4 +1,5 @@
-import { useContext } from "react";
+/* eslint-disable react/no-unescaped-entities */
+import { useContext, useState } from "react";
 import { AuthContext } from "../../Providers/AuthProvider";
 import {
   Button,
@@ -6,31 +7,75 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
+  FormControl,
   Grid,
+  InputLabel,
+  MenuItem,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import swal from "sweetalert";
+import SectionTitle from "../../Hooks/SectionTitle/SectionTitle";
+import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
 
 const Profile = () => {
+  const [startDate, setStartDate] = useState(new Date());
+
+  const axiosSecure = useAxiosSecure();
+
   const { user, loading } = useContext(AuthContext);
-  console.log(user);
+
+  const [type, setType] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const place = form.place.value;
+    const story = form.story.value;
+    const userName = user?.displayName;
+    const userEmail = user?.email;
+    const photo = user?.photoURL;
+
+    const storyInfo = {
+      place,
+      story,
+      type,
+      userName,
+      userEmail,
+      startDate,
+      photo,
+    };
+
+    const res = axiosSecure.post("/addStory", storyInfo);
+    res
+      .then((res) => {
+        swal("Success!", "You Are Successfully Added Your Story", "success");
+        form.reset();
+        console.log(res.data);
+      })
+      .catch((err) => {
+        swal("Error!", `${err.message}`, "error");
+        console.log(err);
+      });
+
+    console.log(storyInfo);
+  };
+
+  const handleChange = (event) => {
+    setType(event.target.value);
+  };
+
   if (loading) {
     return;
   }
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Add your form submission logic here
-  };
-  console.log(user);
+
   return (
     <Grid>
-      <Grid
-        container
-        justifyContent="center"
-        alignItems="center"
-        height="100vh"
-      >
-        <Card sx={{ maxWidth: 545, gap: "50px" }}>
+      <Grid container justifyContent="center" alignItems="center">
+        <Card sx={{ maxWidth: 545, gap: "50px", marginBottom: "30px" }}>
           <CardActionArea>
             <CardMedia
               component="img"
@@ -83,32 +128,60 @@ const Profile = () => {
             </CardContent>
           </CardActionArea>
         </Card>
-      </Grid>
-      <Grid mt={5}>
-        <form onSubmit={handleSubmit}>
-          <TextField
-            id="name"
-            label="Name"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            required
-          />
 
-          <TextField
-            id="email"
-            label="Email"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            type="email"
-            required
-          />
+        <Grid>
+          <Grid>
+            <SectionTitle title={"Share Your Story With Us"}></SectionTitle>
+            <form onSubmit={handleSubmit}>
+              <TextField
+                label="Place"
+                name="place"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                required
+              />
 
-          <Button type="submit" variant="contained" color="primary">
-            Submit
-          </Button>
-        </form>
+              <FormControl fullWidth>
+                <InputLabel id="select-label">Select a Type</InputLabel>
+                <Select
+                  labelId="select-label"
+                  id="select"
+                  value={type}
+                  label="Select an Option"
+                  onChange={handleChange}
+                >
+                  <MenuItem value="cultural">Cultural</MenuItem>
+                  <MenuItem value="adventure">Adventure</MenuItem>
+                  <MenuItem value="walking">Walking</MenuItem>
+                  <MenuItem value="urban">Urban</MenuItem>
+                  <MenuItem value="nature">Nature</MenuItem>
+                </Select>
+              </FormControl>
+
+              <TextField
+                label="Write Your Story"
+                name="story"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                type="text"
+                required
+              />
+
+              <Grid width={"100%"} my={2}>
+                <DatePicker
+                  selected={startDate}
+                  onChange={(date) => setStartDate(date)}
+                />
+              </Grid>
+
+              <Button type="submit" variant="contained" color="primary">
+                Add Story
+              </Button>
+            </form>
+          </Grid>
+        </Grid>
       </Grid>
     </Grid>
   );
