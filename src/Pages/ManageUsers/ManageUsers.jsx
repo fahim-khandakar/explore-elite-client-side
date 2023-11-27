@@ -16,6 +16,7 @@ import swal from "sweetalert";
 
 const ManageUsers = () => {
   const [buttonsDisabled, setButtonsDisabled] = useState(false);
+  const [storeId, setStoreId] = useState();
   const axiosSecure = useAxiosSecure();
   const {
     data: users = [],
@@ -28,8 +29,6 @@ const ManageUsers = () => {
       return res.data;
     },
   });
-
-  console.log(users);
 
   function createData(photo, name, email, role, id) {
     return { photo, name, email, role, id };
@@ -45,8 +44,10 @@ const ManageUsers = () => {
     res.then((res) => {
       if (res.data.modifiedCount > 0) {
         swal("success", "The user has been updated successfully");
+
         refetch();
         setButtonsDisabled(true);
+        console.log(storeId);
       } else {
         swal("error", "An error has occurred while updating the user", "error");
         setButtonsDisabled(false);
@@ -60,10 +61,12 @@ const ManageUsers = () => {
       if (res.data.modifiedCount > 0) {
         swal("success", "The user has been updated successfully");
         refetch();
+        setStoreId(id);
         setButtonsDisabled(true);
       } else {
         swal("error", "An error has occurred while updating the user", "error");
         setButtonsDisabled(false);
+        setStoreId(null);
       }
     });
   };
@@ -105,7 +108,7 @@ const ManageUsers = () => {
                 <Button
                   variant="contained"
                   onClick={() => handleMakeAdmin(row.id)}
-                  disabled={buttonsDisabled}
+                  disabled={storeId === row.id && buttonsDisabled}
                 >
                   Make Admin
                 </Button>
@@ -114,7 +117,7 @@ const ManageUsers = () => {
                 <Button
                   variant="contained"
                   onClick={() => handleMakeGuide(row.id)}
-                  disabled={buttonsDisabled}
+                  disabled={storeId === row.id && buttonsDisabled}
                 >
                   Make Guide
                 </Button>

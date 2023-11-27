@@ -17,11 +17,7 @@ const AllPackages = () => {
     return;
   }
   return (
-    <Container
-      maxWidth="lg"
-      container
-      sx={{ display: "flex", justifyContent: "center" }}
-    >
+    <Container maxWidth="lg" sx={{ display: "flex", justifyContent: "center" }}>
       {!isLoading &&
         allPackages.map((item, index) => (
           <Grid key={index} item xs={12} md={4}>

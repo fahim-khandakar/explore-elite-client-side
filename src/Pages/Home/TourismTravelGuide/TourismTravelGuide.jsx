@@ -8,9 +8,25 @@ import { useQuery } from "@tanstack/react-query";
 import userAxiosPublic from "../../../Hooks/useAxiosPublic";
 import { Button } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import MeetOurTourGuides from "../../../Components/MeetOurTourGuides/MeetOurTourGuides";
 
 const TourismTravelGuide = () => {
   const axiosPublic = userAxiosPublic();
+
+  const axiosSecure = useAxiosSecure();
+  const {
+    data: guides = [],
+    isLoading: isUsersLoading,
+    // refetch,
+  } = useQuery({
+    queryKey: ["guides"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/users/guide");
+      return res.data;
+    },
+  });
+  console.log(guides);
   const { data: packages = [], isLoading } = useQuery({
     queryKey: ["packages"],
     queryFn: async () => {
@@ -22,7 +38,6 @@ const TourismTravelGuide = () => {
   if (isLoading) {
     return;
   }
-  console.log(packages);
   return (
     <Grid textAlign={"center"} my={10}>
       <SectionTitle title={"Tourism and Travel Guide"}></SectionTitle>
@@ -73,7 +88,38 @@ const TourismTravelGuide = () => {
           </Grid>
         </TabPanel>
         <TabPanel>
-          <h2>Any content 3</h2>
+          <Typography
+            sx={{
+              textAlign: "center",
+              color: "#e65728",
+              variant: "h4",
+              fontWeight: 600,
+              my: [3, 4, 5],
+              fontSize: ["1.2rem", "1.5rem", "2rem"], // Responsive font size
+            }}
+          >
+            Our Guides
+          </Typography>
+          <Grid container sx={{ display: "flex", justifyContent: "center" }}>
+            {!isUsersLoading &&
+              guides.map((guide, index) => (
+                <Grid key={index} item xs={12} md={4}>
+                  <MeetOurTourGuides guide={guide}></MeetOurTourGuides>
+                </Grid>
+              ))}
+            {/* <Button
+              component={RouterLink}
+              to="/allPackages"
+              variant="contained"
+              sx={{
+                backgroundColor: "#e65728",
+                color: "#ffffff",
+                marginTop: "20px",
+              }}
+            >
+              Show All
+            </Button> */}
+          </Grid>
         </TabPanel>
       </Tabs>
     </Grid>

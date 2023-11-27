@@ -141,7 +141,10 @@ const PackageDetails = () => {
       <SectionTitle title={"Choose Guide For This Trip"}></SectionTitle>
       <GuideList></GuideList>
       <SectionTitle title={"Booking Form"}></SectionTitle>
-      <BookingForm price={packageDetails.price}></BookingForm>
+      <BookingForm
+        price={packageDetails.price}
+        name={packageDetails.name}
+      ></BookingForm>
     </Container>
   );
 };
