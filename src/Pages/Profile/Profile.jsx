@@ -71,7 +71,6 @@ const Profile = () => {
   if (loading) {
     return;
   }
-
   return (
     <Grid>
       <Grid container justifyContent="center" alignItems="center">

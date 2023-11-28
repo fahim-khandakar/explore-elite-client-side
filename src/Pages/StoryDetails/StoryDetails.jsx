@@ -16,9 +16,12 @@ import {
 } from "@mui/material";
 import { format, isValid } from "date-fns";
 import { FacebookShareButton } from "react-share";
+import { useContext } from "react";
+import { AuthContext } from "../../Providers/AuthProvider";
 
 const StoryDetails = () => {
   const { id } = useParams();
+  const { user } = useContext(AuthContext);
   const axiosPublic = userAxiosPublic();
   const { data: storyDetails = [], isLoading } = useQuery({
     queryKey: ["storyDetails"],
@@ -60,7 +63,11 @@ const StoryDetails = () => {
             </Typography>
           </CardContent>
           <CardActions disableSpacing>
-            <FacebookShareButton url={shareUrl}>
+            <FacebookShareButton
+              title={user ? "" : "Please login first"}
+              disabled={user ? false : true}
+              url={shareUrl}
+            >
               {/* No need for an additional IconButton */}
               <ShareIcon aria-label="share" />
             </FacebookShareButton>
@@ -71,7 +78,7 @@ const StoryDetails = () => {
       <Grid display={"flex"} mt={5} justifyContent={"center"}>
         <Button
           component={RouterLink}
-          to={`/allStories`}
+          to={`/blogs`}
           variant="contained"
           sx={{ backgroundColor: "#e65728", color: "#ffffff" }}
         >

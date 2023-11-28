@@ -1,7 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
-import { useContext } from "react";
-import { AuthContext } from "../../Providers/AuthProvider";
 import {
   Button,
   Paper,
@@ -14,35 +11,84 @@ import {
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { format } from "date-fns";
+import swal from "sweetalert";
+
+import Confetti from "react-confetti";
+import { useWindowSize } from "react-use";
+import useBookingsData from "../../Hooks/useBookingsData";
+import { useEffect, useState } from "react";
 
 const TouristBookings = () => {
   const axiosSecure = useAxiosSecure();
-  const { user } = useContext(AuthContext);
-  const { data: bookingsData, isLoading } = useQuery({
-    queryKey: ["bookingsData", user],
-    queryFn: async () => {
-      const res = await axiosSecure.get(`/bookings/?email=${user?.email}`);
-      return res.data;
-    },
-  });
+
+  const { bookingsData, isBookingsLoading, refetch } = useBookingsData();
+  const { width, height } = useWindowSize();
+
+  const [discountSwalShown, setDiscountSwalShown] = useState(false);
+  const [confettiVisible, setConfettiVisible] = useState(false);
+  const filter = bookingsData.filter((booked) => booked.status !== "rejected");
+
+  useEffect(() => {
+    if (filter?.length === 4 && !isBookingsLoading) {
+      swal(
+        "Congratulations!",
+        "You get 20% discount for your 3 times bookings.",
+        "success"
+      );
+
+      // Set discountSwalShown to true
+      setDiscountSwalShown(true);
+
+      // Set Confetti to visible
+      setConfettiVisible(true);
+
+      // Hide the swal message after 3 seconds
+      const timeoutId = setTimeout(() => {
+        setDiscountSwalShown(false);
+        setConfettiVisible(false); // Hide Confetti after 3 seconds
+      }, 3000);
+
+      // Clear the timeout on component unmount or when bookingsData changes
+      return () => clearTimeout(timeoutId);
+    }
+  }, [filter?.length, isBookingsLoading]);
 
   function createData(packageName, guideName, date, price, status, id) {
     return { packageName, guideName, date, price, status, id };
   }
 
   const rows =
-    !isLoading &&
+    !isBookingsLoading &&
     bookingsData?.map((booking) =>
       createData(
         booking.packageName,
         booking.guide.name,
         booking.date,
         booking.price,
-        booking.status
+        booking.status,
+        booking._id
       )
     );
+
+  const handleCancel = (id) => {
+    axiosSecure
+      .put(`/bookingCancel/${id}`)
+      .then((res) => {
+        if (res.data.modifiedCount > 0) {
+          swal("success", "The Booking was successfully canceled", "success");
+          refetch();
+        }
+      })
+      .catch((err) => {
+        swal("Error", `${err.message}`, "error");
+      });
+  };
   return (
     <TableContainer component={Paper}>
+      {confettiVisible && discountSwalShown && filter?.length === 4 && (
+        <Confetti width={width} height={height} />
+      )}
+
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -51,22 +97,14 @@ const TouristBookings = () => {
             <TableCell align="right">Date</TableCell>
             <TableCell align="right">Price</TableCell>
             <TableCell align="right">Status</TableCell>
-            {!isLoading &&
-              rows.map((row, index) =>
-                row.status === "review" ? (
-                  <TableCell key={index} align="right">
-                    Action
-                  </TableCell>
-                ) : (
-                  ""
-                )
-              )}
             <TableCell align="right">Action</TableCell>
+
+            <TableCell align="right">Discount</TableCell>
             <TableCell align="right">Action</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {!isLoading &&
+          {!isBookingsLoading &&
             rows?.map((row, index) => (
               <TableRow
                 key={index}
@@ -85,21 +123,26 @@ const TouristBookings = () => {
                 {row.status === "review" ? (
                   <TableCell align="right">
                     <Button
-                      component={RouterLink}
-                      to={`/guideDetails/${row.id}`}
+                      onClick={() => handleCancel(row.id)}
                       variant="contained"
                     >
-                      Cancel
+                      {row.status === "rejected" ? "Rejected" : "Cancel"}
                     </Button>
                   </TableCell>
                 ) : (
-                  ""
+                  <TableCell align="right">
+                    <Button
+                      disabled
+                      // onClick={() => handleCancel(row.id)}
+                      variant="contained"
+                    >
+                      {row.status === "rejected" ? "Rejected" : "Cancel"}
+                    </Button>
+                  </TableCell>
                 )}
                 <TableCell align="right">
                   <Button
-                    disabled={row.status === "accepted"}
-                    component={RouterLink}
-                    to={`/guideDetails/${row.id}`}
+                    disabled={filter?.length <= 3 || row.status === "rejected"}
                     variant="contained"
                   >
                     Apply

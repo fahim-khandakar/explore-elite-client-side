@@ -20,6 +20,7 @@ import ShowByType from "../Pages/ShowByType/ShowByType";
 import StoryDetails from "../Pages/StoryDetails/StoryDetails";
 import AllStories from "../Pages/AllStories/AllStories";
 import Profile from "../Pages/Profile/Profile";
+import Community from "../Pages/Community/Community";
 
 export const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ export const router = createBrowserRouter([
         element: <AllPackages></AllPackages>,
       },
       {
+        path: "/community",
+        element: <Community></Community>,
+      },
+      {
         path: "/packageDetails/:id",
         element: <PackageDetails></PackageDetails>,
       },
@@ -60,7 +65,7 @@ export const router = createBrowserRouter([
         element: <StoryDetails></StoryDetails>,
       },
       {
-        path: "/allStories",
+        path: "/blogs",
         element: <AllStories></AllStories>,
       },
       {

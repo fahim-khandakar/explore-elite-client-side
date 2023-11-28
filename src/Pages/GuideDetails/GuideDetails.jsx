@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useParams } from "react-router-dom";
 import userAxiosPublic from "../../Hooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
@@ -12,8 +13,12 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useContext } from "react";
+import { AuthContext } from "../../Providers/AuthProvider";
+import swal from "sweetalert";
 
 const GuideDetails = () => {
+  const { user } = useContext(AuthContext);
   const { id } = useParams();
   const axiosPublic = userAxiosPublic();
   const { data: guideDetails, isLoading } = useQuery({
@@ -27,8 +32,13 @@ const GuideDetails = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Add your form submission logic here
+    const form = e.target;
+    const comment = form.comment.value;
+    const rating = form.rating.value;
+    console.log(comment, rating);
+    swal("Success", "Thanks for your feedback", "success");
+    form.reset();
   };
-  console.log(guideDetails);
   return (
     <Container maxWidth={"lg"}>
       {!isLoading && guideDetails && (
@@ -107,6 +117,7 @@ const GuideDetails = () => {
             <form onSubmit={handleSubmit}>
               <TextField
                 label="Comment"
+                name="comment"
                 variant="outlined"
                 fullWidth
                 margin="normal"
@@ -115,6 +126,7 @@ const GuideDetails = () => {
 
               <TextField
                 label="Rating"
+                name="rating"
                 variant="outlined"
                 fullWidth
                 margin="normal"
@@ -122,7 +134,12 @@ const GuideDetails = () => {
                 required
               />
 
-              <Button type="submit" variant="contained" color="primary">
+              <Button
+                disabled={user ? false : true}
+                type="submit"
+                variant="contained"
+                color="primary"
+              >
                 Submit
               </Button>
             </form>

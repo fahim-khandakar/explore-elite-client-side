@@ -19,6 +19,7 @@ import { Link as RouterLink } from "react-router-dom";
 
 import "react-datepicker/dist/react-datepicker.css";
 import userAxiosPublic from "../../Hooks/useAxiosPublic";
+import useBookingsData from "../../Hooks/useBookingsData";
 
 const style = {
   position: "absolute",
@@ -36,30 +37,26 @@ const style = {
 
 const BookingForm = ({ price, name }) => {
   const [open, setOpen] = useState(false);
+  const { refetch } = useBookingsData();
+
   const packageName = name;
 
   const { user } = useContext(AuthContext);
   const [type, setType] = useState("");
   const axiosPublic = userAxiosPublic();
   const [startDate, setStartDate] = useState(new Date());
-  const {
-    data: users = [],
-    isLoading: isUsersLoading,
-    // refetch,
-  } = useQuery({
+  const { data: users = [] } = useQuery({
     queryKey: ["usersForBooking", price],
     queryFn: async () => {
       const res = await axiosPublic.get("/users/guide");
       return res.data;
     },
   });
-  if (isUsersLoading) {
-    return;
-  }
-  const handleSubmit = () => {
-    const form = document.getElementById("bookingForm");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const form = e.target;
     console.log("submitted");
-    // const form = e.target;
     const name = form.name.value;
     const photo = form.photo.value;
     const price = form.price.value;
@@ -69,7 +66,6 @@ const BookingForm = ({ price, name }) => {
     const status = "review";
     const bookingInfo = {
       packageName,
-
       name,
       photo,
       email,
@@ -81,11 +77,10 @@ const BookingForm = ({ price, name }) => {
 
     const res = axiosPublic.post("/addBooking", bookingInfo);
     res
-      .then((res) => {
-        swal("Success!", "You Are Successfully Booked", "success");
-
+      .then(() => {
         form.reset();
-        console.log(res.data);
+        setOpen(true);
+        refetch();
       })
       .catch((err) => {
         swal("Error!", `${err.message}`, "error");
@@ -97,13 +92,14 @@ const BookingForm = ({ price, name }) => {
     setType(event.target.value);
   };
 
-  // for modal
   const handleOpen = () => {
     setOpen(true);
   };
+
   const handleClose = () => {
     setOpen(false);
   };
+
   return (
     <Grid sx={{ width: "50%", margin: "auto" }}>
       {user && (
@@ -180,7 +176,7 @@ const BookingForm = ({ price, name }) => {
             {user ? (
               <Button
                 onClick={handleOpen}
-                // type="submit"
+                type="submit"
                 sx={{ marginTop: "30px" }}
                 variant="contained"
                 color="primary"
@@ -207,19 +203,16 @@ const BookingForm = ({ price, name }) => {
           >
             <Box sx={{ ...style, width: 400 }}>
               <h2 id="parent-modal-title">Trip: {name}</h2>
-              <p id="parent-modal-description">Please Confirm Your Booking</p>
+              <p id="parent-modal-description">Confirm Your Booking</p>
               <Grid display={"flex"} justifyContent={"space-around"}>
                 <Button
-                  type="submit"
+                  // type="submit"
                   sx={{ marginTop: "30px" }}
                   variant="contained"
                   color="primary"
-                  onClick={() => {
-                    handleSubmit();
-                    handleClose();
-                  }}
+                  onClick={() => handleClose()}
                 >
-                  Booking Confirm
+                  OK
                 </Button>
                 <Button
                   sx={{ marginTop: "30px" }}
@@ -228,7 +221,7 @@ const BookingForm = ({ price, name }) => {
                   component={RouterLink}
                   to={"/dashboard/touristBookings"}
                 >
-                  Booking List
+                  My Bookings
                 </Button>
               </Grid>
             </Box>

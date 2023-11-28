@@ -20,9 +20,21 @@ const AddPackage = () => {
     const form = e.target;
     const name = form.name.value;
     const photoURL = form.photoURL.value;
+    const day1 = form.day1.value;
+    const day2 = form.day2.value;
+    const day3 = form.day3.value;
     const details = form.details.value;
     const price = form.price.value;
-    const packageInfo = { name, photoURL, details, price, type };
+    const packageInfo = {
+      name,
+      photoURL,
+      day1,
+      day2,
+      day3,
+      details,
+      price,
+      type,
+    };
 
     const res = axiosSecure.post("/addPackage", packageInfo);
     res
@@ -74,6 +86,33 @@ const AddPackage = () => {
         <TextField
           label="PhotoURL"
           name="photoURL"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          type="text"
+          required
+        />
+        <TextField
+          label="Day 1 Plan"
+          name="day1"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          type="text"
+          required
+        />
+        <TextField
+          label="Day 2 Plan"
+          name="day2"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          type="text"
+          required
+        />
+        <TextField
+          label="Day 3 Plan"
+          name="day3"
           variant="outlined"
           fullWidth
           margin="normal"
