@@ -20,6 +20,8 @@ import swal from "sweetalert";
 import SectionTitle from "../../Hooks/SectionTitle/SectionTitle";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
+import { Helmet } from "react-helmet-async";
+import { HashLoader } from "react-spinners";
 
 const Profile = () => {
   const [startDate, setStartDate] = useState(new Date());
@@ -69,10 +71,17 @@ const Profile = () => {
   };
 
   if (loading) {
-    return;
+    return (
+      <Grid container justifyContent="center" alignItems="center">
+        <HashLoader color="#36d7b7" />
+      </Grid>
+    );
   }
   return (
     <Grid>
+      <Helmet>
+        <title>Explore Elite | Profile</title>
+      </Helmet>
       <Grid container justifyContent="center" alignItems="center">
         <Card sx={{ maxWidth: 545, gap: "50px", marginBottom: "30px" }}>
           <CardActionArea>
@@ -160,11 +169,11 @@ const Profile = () => {
 
               <TextField
                 label="Write Your Story"
-                name="story"
                 variant="outlined"
+                name="story"
                 fullWidth
-                margin="normal"
-                type="text"
+                multiline
+                rows={4}
                 required
               />
 

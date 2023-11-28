@@ -10,6 +10,7 @@ import { Button } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import MeetOurTourGuides from "../../../Components/MeetOurTourGuides/MeetOurTourGuides";
+import { HashLoader } from "react-spinners";
 
 const TourismTravelGuide = () => {
   const axiosPublic = userAxiosPublic();
@@ -35,7 +36,11 @@ const TourismTravelGuide = () => {
   });
 
   if (isLoading) {
-    return;
+    return (
+      <Grid container justifyContent="center" alignItems="center">
+        <HashLoader color="#36d7b7" />
+      </Grid>
+    );
   }
   return (
     <Grid textAlign={"center"} my={10}>

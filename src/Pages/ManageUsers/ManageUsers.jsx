@@ -1,6 +1,7 @@
 import {
   Button,
   CardMedia,
+  Grid,
   Paper,
   Table,
   TableBody,
@@ -13,6 +14,8 @@ import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import swal from "sweetalert";
+import { Helmet } from "react-helmet-async";
+import { HashLoader } from "react-spinners";
 
 const ManageUsers = () => {
   const [buttonsDisabled, setButtonsDisabled] = useState(false);
@@ -20,7 +23,7 @@ const ManageUsers = () => {
   const axiosSecure = useAxiosSecure();
   const {
     data: users = [],
-    // isLoading: isUsersLoading,
+    isLoading,
     refetch,
   } = useQuery({
     queryKey: ["users"],
@@ -71,8 +74,19 @@ const ManageUsers = () => {
     });
   };
 
+  if (isLoading) {
+    return (
+      <Grid container justifyContent="center" alignItems="center">
+        <HashLoader color="#36d7b7" />
+      </Grid>
+    );
+  }
+
   return (
     <TableContainer component={Paper}>
+      <Helmet>
+        <title>Explore Elite | Users</title>
+      </Helmet>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>

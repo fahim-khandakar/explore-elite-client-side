@@ -7,6 +7,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import {
   Button,
   CardMedia,
+  Grid,
   IconButton,
   Paper,
   Table,
@@ -18,6 +19,8 @@ import {
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import swal from "sweetalert";
+import { Helmet } from "react-helmet-async";
+import { HashLoader } from "react-spinners";
 
 const TouristWishlist = () => {
   const axiosSecure = useAxiosSecure();
@@ -35,9 +38,6 @@ const TouristWishlist = () => {
       return res.data;
     },
   });
-  if (isLoading && !user) {
-    return;
-  }
 
   function createData(photo, name, type, price, id, wishId) {
     return { photo, name, type, price, id, wishId };
@@ -82,8 +82,18 @@ const TouristWishlist = () => {
       });
   };
 
+  if (isLoading) {
+    return (
+      <Grid container justifyContent="center" alignItems="center">
+        <HashLoader color="#36d7b7" />
+      </Grid>
+    );
+  }
   return (
     <TableContainer component={Paper}>
+      <Helmet>
+        <title>Explore Elite | Wish List</title>
+      </Helmet>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>

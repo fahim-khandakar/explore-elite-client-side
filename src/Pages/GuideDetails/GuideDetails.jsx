@@ -16,6 +16,8 @@ import {
 import { useContext } from "react";
 import { AuthContext } from "../../Providers/AuthProvider";
 import swal from "sweetalert";
+import { Helmet } from "react-helmet-async";
+import { HashLoader } from "react-spinners";
 
 const GuideDetails = () => {
   const { user } = useContext(AuthContext);
@@ -39,8 +41,20 @@ const GuideDetails = () => {
     swal("Success", "Thanks for your feedback", "success");
     form.reset();
   };
+
+  if (isLoading) {
+    return (
+      <Grid container justifyContent="center" alignItems="center">
+        <HashLoader color="#36d7b7" />
+      </Grid>
+    );
+  }
+
   return (
     <Container maxWidth={"lg"}>
+      <Helmet>
+        <title>Explore Elite | Guide</title>
+      </Helmet>
       {!isLoading && guideDetails && (
         <Grid display={"flex"} justifyContent={"center"} alignItems={"start"}>
           <Grid container mt={2} height="100vh">

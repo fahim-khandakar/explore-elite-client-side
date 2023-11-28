@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import {
   Button,
+  Grid,
   Paper,
   Table,
   TableBody,
@@ -15,6 +16,8 @@ import { AuthContext } from "../../Providers/AuthProvider";
 import { format } from "date-fns";
 import swal from "sweetalert";
 import useBookingsData from "../../Hooks/useBookingsData";
+import { Helmet } from "react-helmet-async";
+import { HashLoader } from "react-spinners";
 
 const GuideAssignTour = () => {
   const axiosSecure = useAxiosSecure();
@@ -23,7 +26,7 @@ const GuideAssignTour = () => {
   const { user, loading } = useContext(AuthContext);
   const {
     data: assignTours = [],
-    // isLoading: isUsersLoading,
+    isLoading,
     refetch: rejectRefetch,
   } = useQuery({
     queryKey: ["assignTours", user],
@@ -79,8 +82,19 @@ const GuideAssignTour = () => {
     )
   );
 
+  if (isLoading || loading) {
+    return (
+      <Grid container justifyContent="center" alignItems="center">
+        <HashLoader color="#36d7b7" />
+      </Grid>
+    );
+  }
+
   return (
     <TableContainer component={Paper}>
+      <Helmet>
+        <title>Explore Elite | Assign Tours</title>
+      </Helmet>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>

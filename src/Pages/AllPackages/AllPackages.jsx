@@ -3,6 +3,8 @@ import userAxiosPublic from "../../Hooks/useAxiosPublic";
 import { Container, Grid } from "@mui/material";
 import OurPackage from "../../Components/OverView/OurPackage/OurPackage";
 import SectionTitle from "../../Hooks/SectionTitle/SectionTitle";
+import { Helmet } from "react-helmet-async";
+import { HashLoader } from "react-spinners";
 
 const AllPackages = () => {
   const axiosPublic = userAxiosPublic();
@@ -13,12 +15,19 @@ const AllPackages = () => {
       return res.data;
     },
   });
-
   if (isLoading) {
-    return;
+    return (
+      <Grid container justifyContent="center" alignItems="center">
+        <HashLoader color="#36d7b7" />
+      </Grid>
+    );
   }
+
   return (
     <Grid>
+      <Helmet>
+        <title>Explore Elite | Packages</title>
+      </Helmet>
       <SectionTitle title={"All Packages"}></SectionTitle>
       <Container
         maxWidth="lg"

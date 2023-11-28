@@ -18,6 +18,8 @@ import { format, isValid } from "date-fns";
 import { FacebookShareButton } from "react-share";
 import { useContext } from "react";
 import { AuthContext } from "../../Providers/AuthProvider";
+import { Helmet } from "react-helmet-async";
+import { HashLoader } from "react-spinners";
 
 const StoryDetails = () => {
   const { id } = useParams();
@@ -32,7 +34,11 @@ const StoryDetails = () => {
   });
 
   if (isLoading) {
-    return <div>Hello</div>;
+    return (
+      <Grid container justifyContent="center" alignItems="center">
+        <HashLoader color="#36d7b7" />
+      </Grid>
+    );
   }
 
   const shareUrl = `http://localhost:5173/storyDetails/${id}`;
@@ -43,6 +49,9 @@ const StoryDetails = () => {
 
   return (
     <Grid item xs={12} lg={6} maxWidth={"lg"} marginX={"auto"} my={5}>
+      <Helmet>
+        <title>Explore Elite | Home</title>
+      </Helmet>
       {!isLoading && storyDetails && (
         <Card sx={{ textDecoration: "none" }}>
           <CardHeader

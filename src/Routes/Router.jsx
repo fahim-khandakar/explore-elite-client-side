@@ -21,6 +21,8 @@ import StoryDetails from "../Pages/StoryDetails/StoryDetails";
 import AllStories from "../Pages/AllStories/AllStories";
 import Profile from "../Pages/Profile/Profile";
 import Community from "../Pages/Community/Community";
+import AboutUs from "../Pages/AboutUs/AboutUs";
+import ContactUs from "../Pages/ContactUs/ContactUs";
 
 export const router = createBrowserRouter([
   {
@@ -67,6 +69,14 @@ export const router = createBrowserRouter([
       {
         path: "/blogs",
         element: <AllStories></AllStories>,
+      },
+      {
+        path: "/about-us",
+        element: <AboutUs></AboutUs>,
+      },
+      {
+        path: "/contact-us",
+        element: <ContactUs></ContactUs>,
       },
       {
         path: "/dashboard",

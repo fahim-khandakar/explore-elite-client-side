@@ -10,6 +10,8 @@ import {
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import swal from "sweetalert";
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
+import SectionTitle from "../../Hooks/SectionTitle/SectionTitle";
 
 const AddPackage = () => {
   const axiosSecure = useAxiosSecure();
@@ -56,6 +58,10 @@ const AddPackage = () => {
   };
   return (
     <Grid>
+      <Helmet>
+        <title>Explore Elite | Add Package</title>
+      </Helmet>
+      <SectionTitle title={"Add  New Package"}></SectionTitle>
       <form onSubmit={handleSubmit}>
         <TextField
           label="Name"
@@ -78,8 +84,8 @@ const AddPackage = () => {
             <MenuItem value="cultural">Cultural</MenuItem>
             <MenuItem value="adventure">Adventure</MenuItem>
             <MenuItem value="walking">Walking</MenuItem>
-            <MenuItem value="walking">Urban</MenuItem>
-            <MenuItem value="walking">Nature</MenuItem>
+            <MenuItem value="urban">Urban</MenuItem>
+            <MenuItem value="nature">Nature</MenuItem>
           </Select>
         </FormControl>
 
@@ -135,12 +141,19 @@ const AddPackage = () => {
           name="details"
           variant="outlined"
           fullWidth
+          multiline
+          rows={4}
           margin="normal"
           type="text"
           required
         />
 
-        <Button type="submit" variant="contained" color="primary">
+        <Button
+          type="submit"
+          sx={{ mt: 2 }}
+          variant="contained"
+          color="primary"
+        >
           Add Package
         </Button>
       </form>

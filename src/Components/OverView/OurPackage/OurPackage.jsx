@@ -9,9 +9,10 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useContext, useState } from "react";
 import { Button, Grid } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
-import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import swal from "sweetalert";
 import { AuthContext } from "../../../Providers/AuthProvider";
+import { HashLoader } from "react-spinners";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const OurPackage = ({ item }) => {
   const [isFavorite, setIsFavorite] = useState(false);
@@ -34,7 +35,11 @@ const OurPackage = ({ item }) => {
   };
 
   if (!item && !user) {
-    return;
+    return (
+      <Grid container justifyContent="center" alignItems="center">
+        <HashLoader color="#36d7b7" />
+      </Grid>
+    );
   }
 
   const handleFavoriteClick = async () => {
@@ -45,7 +50,7 @@ const OurPackage = ({ item }) => {
         setOpen(true);
       })
       .catch((err) => {
-        swal("success", `${err.message}`, "success");
+        swal("error", `${err.message}`, "error");
         setOpen(false);
       });
     setIsFavorite(!isFavorite);

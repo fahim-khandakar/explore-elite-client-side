@@ -1,6 +1,7 @@
 import {
   Button,
   CardMedia,
+  Grid,
   Paper,
   Table,
   TableBody,
@@ -9,20 +10,21 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import { Link as RouterLink } from "react-router-dom";
+import userAxiosPublic from "../../Hooks/useAxiosPublic";
+import { HashLoader } from "react-spinners";
 
 const GuideList = () => {
-  const axiosSecure = useAxiosSecure();
+  const axiosPublic = userAxiosPublic();
   const {
     data: users = [],
-    // isLoading: isUsersLoading,
+    isLoading,
     // refetch,
   } = useQuery({
     queryKey: ["usersDetails"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/users/guide");
+      const res = await axiosPublic.get("/users/guide");
       return res.data;
     },
   });
@@ -33,6 +35,14 @@ const GuideList = () => {
   const rows = users.map((user) =>
     createData(user.photo, user.name, user.email, user.role, user._id)
   );
+
+  if (isLoading) {
+    return (
+      <Grid container justifyContent="center" alignItems="center">
+        <HashLoader color="#36d7b7" />
+      </Grid>
+    );
+  }
 
   return (
     <TableContainer component={Paper}>

@@ -20,6 +20,7 @@ import { Link as RouterLink } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 import userAxiosPublic from "../../Hooks/useAxiosPublic";
 import useBookingsData from "../../Hooks/useBookingsData";
+import { HashLoader } from "react-spinners";
 
 const style = {
   position: "absolute",
@@ -45,7 +46,7 @@ const BookingForm = ({ price, name }) => {
   const [type, setType] = useState("");
   const axiosPublic = userAxiosPublic();
   const [startDate, setStartDate] = useState(new Date());
-  const { data: users = [] } = useQuery({
+  const { data: users = [], isLoading } = useQuery({
     queryKey: ["usersForBooking", price],
     queryFn: async () => {
       const res = await axiosPublic.get("/users/guide");
@@ -100,9 +101,17 @@ const BookingForm = ({ price, name }) => {
     setOpen(false);
   };
 
+  if (isLoading) {
+    return (
+      <Grid container justifyContent="center" alignItems="center">
+        <HashLoader color="#36d7b7" />
+      </Grid>
+    );
+  }
+
   return (
     <Grid sx={{ width: "50%", margin: "auto" }}>
-      {user && (
+      {
         <Grid>
           <form id="bookingForm" onSubmit={handleSubmit}>
             <TextField
@@ -227,7 +236,7 @@ const BookingForm = ({ price, name }) => {
             </Box>
           </Modal>
         </Grid>
-      )}
+      }
     </Grid>
   );
 };

@@ -1,6 +1,7 @@
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import {
   Button,
+  Grid,
   Paper,
   Table,
   TableBody,
@@ -12,11 +13,13 @@ import {
 import { Link as RouterLink } from "react-router-dom";
 import { format } from "date-fns";
 import swal from "sweetalert";
+import { HashLoader } from "react-spinners";
 
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 import useBookingsData from "../../Hooks/useBookingsData";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 
 const TouristBookings = () => {
   const axiosSecure = useAxiosSecure();
@@ -26,7 +29,7 @@ const TouristBookings = () => {
 
   const [discountSwalShown, setDiscountSwalShown] = useState(false);
   const [confettiVisible, setConfettiVisible] = useState(false);
-  const filter = bookingsData.filter((booked) => booked.status !== "rejected");
+  const filter = bookingsData?.filter((booked) => booked.status !== "rejected");
 
   useEffect(() => {
     if (filter?.length === 4 && !isBookingsLoading) {
@@ -83,8 +86,19 @@ const TouristBookings = () => {
         swal("Error", `${err.message}`, "error");
       });
   };
+
+  if (isBookingsLoading) {
+    return (
+      <Grid container justifyContent="center" alignItems="center">
+        <HashLoader color="#36d7b7" />
+      </Grid>
+    );
+  }
   return (
     <TableContainer component={Paper}>
+      <Helmet>
+        <title>Explore Elite | Bookings</title>
+      </Helmet>
       {confettiVisible && discountSwalShown && filter?.length === 4 && (
         <Confetti width={width} height={height} />
       )}

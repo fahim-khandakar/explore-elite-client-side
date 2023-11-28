@@ -11,6 +11,8 @@ import userAxiosPublic from "../../Hooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { Link as RouterLink } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+import { HashLoader } from "react-spinners";
 
 const AllStories = () => {
   const axiosPublic = userAxiosPublic();
@@ -23,11 +25,18 @@ const AllStories = () => {
   });
 
   if (isLoading) {
-    return <div>Hello</div>;
+    return (
+      <Grid container justifyContent="center" alignItems="center">
+        <HashLoader color="#36d7b7" />
+      </Grid>
+    );
   }
   console.log(allStories);
   return (
     <Container maxWidth={"lg"}>
+      <Helmet>
+        <title>Explore Elite | Stories</title>
+      </Helmet>
       <Grid container spacing={2}>
         {!isLoading &&
           allStories.map((data, index) => (

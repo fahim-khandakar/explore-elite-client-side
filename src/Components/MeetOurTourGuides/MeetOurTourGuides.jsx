@@ -6,11 +6,16 @@ import CardActions from "@mui/material/CardActions";
 import Typography from "@mui/material/Typography";
 import { Button, Grid } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
+import { HashLoader } from "react-spinners";
 
 const MeetOurTourGuides = ({ guide }) => {
   console.log(guide);
   if (!guide) {
-    return;
+    return (
+      <Grid container justifyContent="center" alignItems="center">
+        <HashLoader color="#36d7b7" />
+      </Grid>
+    );
   }
   return (
     <Card sx={{ maxWidth: 345, textAlign: "left", margin: "20px 10px" }}>

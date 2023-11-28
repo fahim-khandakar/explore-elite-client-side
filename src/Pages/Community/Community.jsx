@@ -11,10 +11,12 @@ import {
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import SectionTitle from "../../Hooks/SectionTitle/SectionTitle";
+import { Helmet } from "react-helmet-async";
+import { HashLoader } from "react-spinners";
 
 const Community = () => {
   const axiosSecure = useAxiosSecure();
-  const { data: community = [], isLoading: isCommunityLoading } = useQuery({
+  const { data: community = [], isLoading } = useQuery({
     queryKey: ["community"],
     queryFn: async () => {
       const res = await axiosSecure.get("/users");
@@ -22,11 +24,22 @@ const Community = () => {
     },
   });
 
+  if (isLoading) {
+    return (
+      <Grid container justifyContent="center" alignItems="center">
+        <HashLoader color="#36d7b7" />
+      </Grid>
+    );
+  }
+
   return (
     <Grid>
+      <Helmet>
+        <title>Explore Elite | Community</title>
+      </Helmet>
       <SectionTitle title={"Our Community"}></SectionTitle>
       <Grid container spacing={2} maxWidth="lg" margin="auto">
-        {!isCommunityLoading &&
+        {!isLoading &&
           community.length > 0 &&
           community.map((user, index) => (
             <Grid item key={index} xs={12} sm={6} md={4} lg={4}>

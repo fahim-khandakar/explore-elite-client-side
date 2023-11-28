@@ -34,12 +34,13 @@ const itemData = [
 
 const CategoryType = () => {
   return (
-    <Box sx={{ height: 570, overflowY: "scroll" }}>
+    <Box sx={{ height: { lg: 570, xs: 270 }, overflowY: "scroll" }}>
       <ImageList variant="masonry" cols={3} gap={8}>
         {itemData.map((item) => (
           <ImageListItem
             component={RouterLink}
             to={`/type/${item.title}`}
+            sx={{ textDecoration: "none" }}
             key={item.img}
           >
             <img
@@ -50,7 +51,10 @@ const CategoryType = () => {
             />
             <ImageListItemBar
               position="below"
-              sx={{ fontWeight: "bold", color: "#e65728" }}
+              sx={{
+                fontWeight: "bold",
+                color: "#e65728",
+              }}
               title={item.author}
             />
           </ImageListItem>

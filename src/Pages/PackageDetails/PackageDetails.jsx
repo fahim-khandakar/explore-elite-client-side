@@ -4,6 +4,7 @@ import {
   CardContent,
   CardMedia,
   Container,
+  Grid,
   Typography,
 } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -13,6 +14,8 @@ import userAxiosPublic from "../../Hooks/useAxiosPublic";
 import GuideList from "../../Components/GuideList/GuideList";
 import SectionTitle from "../../Hooks/SectionTitle/SectionTitle";
 import BookingForm from "../../Components/BookingForm/BookingForm";
+import { Helmet } from "react-helmet-async";
+import { HashLoader } from "react-spinners";
 
 const PackageDetails = () => {
   const { id } = useParams();
@@ -26,10 +29,17 @@ const PackageDetails = () => {
     },
   });
   if (isLoading) {
-    return;
+    return (
+      <Grid container justifyContent="center" alignItems="center">
+        <HashLoader color="#36d7b7" />
+      </Grid>
+    );
   }
   return (
     <Container maxWidth="lg">
+      <Helmet>
+        <title>Explore Elite | Package</title>
+      </Helmet>
       {!isLoading && (
         <Card sx={{ textAlign: "left", margin: "20px 10px" }}>
           <CardMedia

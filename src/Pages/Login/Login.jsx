@@ -164,7 +164,7 @@ const Login = () => {
               sx={{ width: { xs: "80%", md: "50%" } }}
               variant="contained"
             >
-              Register
+              Login
             </Button>
           </Box>
           <Divider

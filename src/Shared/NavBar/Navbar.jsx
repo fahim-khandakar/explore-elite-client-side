@@ -43,7 +43,7 @@ const Navbar = () => {
     "About Us",
     "Contact Us",
     ...(user ? [] : ["Login"]),
-    ...(user ? [] : ["Register"]),
+    // ...(user ? [] : ["Register"]),
   ];
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
