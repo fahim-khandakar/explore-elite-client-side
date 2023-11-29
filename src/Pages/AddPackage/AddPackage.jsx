@@ -81,7 +81,7 @@ const AddPackage = () => {
             label="Select an Option"
             onChange={handleChange}
           >
-            <MenuItem value="cultural">Cultural</MenuItem>
+            <MenuItem value="culture">Culture</MenuItem>
             <MenuItem value="adventure">Adventure</MenuItem>
             <MenuItem value="walking">Walking</MenuItem>
             <MenuItem value="urban">Urban</MenuItem>

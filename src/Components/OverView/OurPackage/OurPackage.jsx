@@ -56,65 +56,83 @@ const OurPackage = ({ item }) => {
     setIsFavorite(!isFavorite);
   };
   return (
-    <Card sx={{ maxWidth: 345, textAlign: "left", margin: "20px 10px" }}>
-      <CardMedia
-        component="img"
-        height="194"
-        image={item && item?.photoURL ? item.photoURL : ""}
-        alt=""
-      />
+    <Grid>
+      <Card
+        sx={{
+          maxWidth: 345,
+          textAlign: "left",
+          margin: "20px 10px",
+        }}
+      >
+        <CardMedia
+          component="img"
+          height="194"
+          image={item && item?.photoURL ? item.photoURL : ""}
+          alt=""
+        />
 
-      <CardContent>
-        <Typography
-          color={"#666666"}
-          sx={{ fontSize: "1rem", marginBottom: "8px" }}
-        >
-          Tour Type: {item.type}
-        </Typography>
-        <Typography
-          color={"#e65728"}
-          sx={{ fontSize: "1.1rem", fontWeight: "bold", marginBottom: "8px" }}
-        >
-          Place: {item.name}
-        </Typography>
+        <CardContent>
+          <Typography
+            color={"#666666"}
+            sx={{ fontSize: "1rem", marginBottom: "8px" }}
+          >
+            Tour Type: {item.type}
+          </Typography>
+          <Typography
+            color={"#e65728"}
+            sx={{ fontSize: "1.1rem", fontWeight: "bold", marginBottom: "8px" }}
+          >
+            Place: {item.name}
+          </Typography>
 
-        <Typography variant="body2" color="text.secondary">
-          {item.details}
-        </Typography>
-        <Typography color={"#e65728"} fontWeight={600} mt={3}>
-          Price: ${item.price}
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <Grid
-          container
-          display={"flex"}
-          justifyContent={"space-between"}
-          alignItems="center"
-        >
-          <Grid item>
-            <IconButton
-              aria-label="add to favorites"
-              onClick={handleFavoriteClick}
-              disabled={open}
-              style={{ color: isFavorite ? "red" : "default" }}
-            >
-              <FavoriteIcon />
-            </IconButton>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              height: "clamp(80px, 10vw, 200px)",
+              overflow: "hidden",
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: 4,
+            }}
+          >
+            {item.details}
+          </Typography>
+          <Typography color={"#e65728"} fontWeight={600} mt={3}>
+            Price: ${item.price}
+          </Typography>
+        </CardContent>
+        <CardActions disableSpacing>
+          <Grid
+            container
+            display={"flex"}
+            justifyContent={"space-between"}
+            alignItems="center"
+          >
+            <Grid item>
+              <IconButton
+                aria-label="add to favorites"
+                onClick={handleFavoriteClick}
+                disabled={open}
+                style={{ color: isFavorite ? "red" : "default" }}
+              >
+                <FavoriteIcon />
+              </IconButton>
+            </Grid>
+            <Grid item>
+              <Button
+                component={RouterLink}
+                to={`/packageDetails/${item?._id}`}
+                variant="contained"
+                sx={{ backgroundColor: "#e65728", color: "#ffffff" }}
+              >
+                View Package
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item>
-            <Button
-              component={RouterLink}
-              to={`/packageDetails/${item?._id}`}
-              variant="contained"
-              sx={{ backgroundColor: "#e65728", color: "#ffffff" }}
-            >
-              View Package
-            </Button>
-          </Grid>
-        </Grid>
-      </CardActions>
-    </Card>
+        </CardActions>
+      </Card>
+    </Grid>
   );
 };
 

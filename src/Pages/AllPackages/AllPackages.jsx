@@ -29,16 +29,15 @@ const AllPackages = () => {
         <title>Explore Elite | Packages</title>
       </Helmet>
       <SectionTitle title={"All Packages"}></SectionTitle>
-      <Container
-        maxWidth="lg"
-        sx={{ display: "flex", justifyContent: "center" }}
-      >
-        {!isLoading &&
-          allPackages.map((item, index) => (
-            <Grid key={index} item xs={12} md={4}>
-              <OurPackage item={item}></OurPackage>
-            </Grid>
-          ))}
+      <Container maxWidth="lg">
+        <Grid container spacing={2}>
+          {!isLoading &&
+            allPackages.map((item, index) => (
+              <Grid key={index} item xs={12} md={4} lg={4}>
+                <OurPackage item={item} />
+              </Grid>
+            ))}
+        </Grid>
       </Container>
     </Grid>
   );

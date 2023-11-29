@@ -34,7 +34,7 @@ const itemData = [
 
 const CategoryType = () => {
   return (
-    <Box sx={{ height: { lg: 570, xs: 270 }, overflowY: "scroll" }}>
+    <Box sx={{ height: { lg: 660, xs: 270 } }}>
       <ImageList variant="masonry" cols={3} gap={8}>
         {itemData.map((item) => (
           <ImageListItem

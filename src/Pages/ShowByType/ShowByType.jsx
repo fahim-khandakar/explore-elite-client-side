@@ -29,16 +29,21 @@ const ShowByType = () => {
   }
   console.log(dataByType);
   return (
-    <Container maxWidth={"lg"}>
+    <Container maxWidth="lg">
       <Helmet>
         <title>Explore Elite | Category</title>
       </Helmet>
       <SectionTitle title={type.toUpperCase()}></SectionTitle>
-      {!isLoading &&
-        dataByType &&
-        dataByType?.map((data, index) => (
-          <OurPackage item={data} key={index}></OurPackage>
-        ))}
+
+      {!isLoading && dataByType && (
+        <Grid container spacing={2}>
+          {dataByType.map((data, index) => (
+            <Grid key={index} item xs={12} md={4} lg={4}>
+              <OurPackage item={data} />
+            </Grid>
+          ))}
+        </Grid>
+      )}
     </Container>
   );
 };
