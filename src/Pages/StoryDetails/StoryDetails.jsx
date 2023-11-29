@@ -41,7 +41,7 @@ const StoryDetails = () => {
     );
   }
 
-  const shareUrl = `http://localhost:5173/storyDetails/${id}`;
+  const shareUrl = `https://explore-elite.web.app/storyDetails/${id}`;
   const startDate = storyDetails?.startDate;
   const formattedDate = isValid(new Date(startDate))
     ? format(new Date(startDate), "yyyy-MM-dd")
